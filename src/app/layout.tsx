@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/sidebar/sidebar";
+import ThemeProvider from "@/lib/provider/ThemeProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,8 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Sidebar />
-        <main className="pt-16 sm:pl-64">{children}</main>
+        <ThemeProvider defaultTheme="dark" enableSystem attribute="class">
+          <Sidebar />
+          <main className="pt-16 sm:pl-64">{children}</main>
+        </ThemeProvider>
       </body>
     </html>
   );
