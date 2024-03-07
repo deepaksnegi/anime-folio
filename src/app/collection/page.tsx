@@ -2,12 +2,22 @@ import BentoGrid from "@/components/ui/bentoGrid/bentoGrid";
 import BentoGridItem from "@/components/ui/bentoGrid/bentoGridItem";
 import { ClipboardCopyIcon, FileIcon, FileSignatureIcon } from "lucide-react";
 import React from "react";
+import Image from "next/image";
 
 type Props = {};
 
 const Collection = (props: Props) => {
   const Skeleton = () => (
-    <div className="flex h-full min-h-[6rem] w-full flex-1 rounded-xl bg-gradient-to-br from-neutral-200 to-neutral-100 dark:from-neutral-900 dark:to-neutral-800"></div>
+    <div className="relative h-[40vh] w-full cursor-pointer">
+      <Image
+        src="https://cdn.pixabay.com/photo/2022/12/01/04/42/man-7628305_1280.jpg"
+        alt="anime"
+        className="object-cover"
+        quality={100}
+        fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+      />
+    </div>
   );
   const items = [
     {
@@ -56,14 +66,14 @@ const Collection = (props: Props) => {
   ];
 
   return (
-    <BentoGrid className="mx-auto max-w-4xl">
+    <BentoGrid className="px-8">
       {items.map((item, i) => (
         <BentoGridItem
           key={i}
           title={item.title}
           description={item.description}
           header={item.header}
-          icon={item.icon}
+          tags={item.icon}
           className={i === 3 || i === 6 ? "md:col-span-2" : ""}
         />
       ))}

@@ -12,6 +12,7 @@ import {
   HourglassIcon,
   ShuffleIcon,
 } from "lucide-react";
+import ThemeToggler from "../ui/ThemeToggler";
 type Props = {};
 
 const Sidebar = (props: Props) => {
@@ -82,27 +83,27 @@ const Sidebar = (props: Props) => {
               </a>
             </div>
             <div className="flex items-center">
-              <div className="ms-3 flex items-center">
-                <div>
-                  <button
-                    type="button"
-                    className="flex rounded-full bg-gray-800 text-sm focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-                    aria-expanded="false"
-                    data-dropdown-toggle="dropdown-user"
-                    onClick={() => setShowLoginInfo((prev) => !prev)}
-                  >
-                    <span className="sr-only">Open user menu</span>
-                    {/* <img
+              <div className="ms-3 flex items-center gap-4">
+                <ThemeToggler />
+                <button
+                  type="button"
+                  className="flex rounded-full bg-gray-800 text-sm focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                  aria-expanded="false"
+                  data-dropdown-toggle="dropdown-user"
+                  onClick={() => setShowLoginInfo((prev) => !prev)}
+                >
+                  <span className="sr-only">Open user menu</span>
+                  {/* <img
                       className="h-8 w-8 rounded-full"
                       src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
                       alt="user photo"
                     /> */}
-                    <Avatar>
-                      <AvatarImage src="https://cdn.waifu.im/7681.jpg" />
-                      <AvatarFallback>Login</AvatarFallback>
-                    </Avatar>
-                  </button>
-                </div>
+
+                  <Avatar>
+                    <AvatarImage src="https://cdn.waifu.im/7681.jpg" />
+                    <AvatarFallback>Login</AvatarFallback>
+                  </Avatar>
+                </button>
                 <div
                   className={cn(
                     "fixed right-4 top-10 z-50 my-4 list-none divide-y divide-gray-100 rounded bg-white text-base shadow dark:divide-gray-600 dark:bg-gray-700",

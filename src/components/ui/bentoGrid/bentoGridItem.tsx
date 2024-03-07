@@ -5,13 +5,13 @@ const BentoGridItem = ({
   title,
   description,
   header,
-  icon,
+  tags,
 }: {
   className?: string;
   title?: string | React.ReactNode;
   description?: string | React.ReactNode;
   header?: React.ReactNode;
-  icon?: React.ReactNode;
+  tags?: React.ReactNode;
 }) => {
   return (
     <div
@@ -22,7 +22,7 @@ const BentoGridItem = ({
     >
       {header}
       <div className="transition duration-200 group-hover/bento:translate-x-2">
-        {icon}
+        {tags}
         <div className="mb-2 mt-2 font-sans font-bold text-neutral-600 dark:text-neutral-200">
           {title}
         </div>
