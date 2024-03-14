@@ -8,6 +8,12 @@ const nextConfig = {
         port: "",
         pathname: "/photo/**",
       },
+      {
+        protocol: "https",
+        hostname: "cdn.myanimelist.net",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 };

@@ -1,35 +1,49 @@
-import SuggestionCard from "@/components/anime/suggestion/suggestionCard";
-import { Card, CardContent } from "@/components/ui/card";
+"use client";
+
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
-import Lamp from "@/components/ui/lamp";
 import PopularCard from "@/components/ui/popularCard";
+import { useGetTopFivePopularAnime } from "@/lib/hooks/animeHook";
+import { randomIntFromInterval } from "@/lib/utils";
 import Image from "next/image";
 
-export default function Home() {
+const Home = () => {
+  const { topFiveAnime, error, isLoading } = useGetTopFivePopularAnime();
+
+  const randomIndex = randomIntFromInterval(0, 4);
+
+  const topAnime = topFiveAnime[randomIndex];
+
+  if (isLoading) {
+    return "Loading";
+  }
+
+  if (error) {
+    return "Error" + error?.message;
+  }
+
   return (
     <>
-      <div className="relative h-[40vh] w-full cursor-pointer">
+      <div className="relative h-[40vh] min-h-72 w-full cursor-pointer">
         <Image
-          src="https://cdn.pixabay.com/photo/2022/12/01/04/42/man-7628305_1280.jpg"
+          src={topAnime.images.jpg.large_image_url}
           alt="anime"
           className="object-cover"
-          quality={100}
           fill
+          priority
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        <span className="absolute left-28 top-48 rounded-sm text-lg font-semibold uppercase text-slate-100 md:text-xl">
-          #Trending
-        </span>
-
-        <h3 className="absolute left-28 top-56 rounded-sm text-2xl font-bold text-slate-100 md:text-4xl">
-          Anime title
-        </h3>
+        <div className="absolute left-28 top-48">
+          <span className="text-lg font-semibold uppercase text-slate-100 md:text-xl">
+            #Trending
+          </span>
+          <h3 className="text-2xl font-bold text-slate-100 md:text-4xl">
+            {topAnime.title}
+          </h3>
+        </div>
       </div>
 
       <div className="mt-4">
@@ -42,13 +56,37 @@ export default function Home() {
           }}
         >
           <CarouselContent>
-            {Array.from({ length: 5 }).map((_, index) => (
+            {topFiveAnime.map((anime) => (
               <CarouselItem
-                key={index}
+                key={anime.id}
                 className="sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
               >
                 <div className="px-1 xl:px-2">
-                  <PopularCard />
+                  <PopularCard anime={anime} />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+      </div>
+
+      <div className="mt-4">
+        <h3 className="px-4 py-6 text-2xl">Top Airing</h3>
+        <Carousel
+          className="w-full px-2 md:px-10 lg:px-20"
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+        >
+          <CarouselContent>
+            {topFiveAnime.map((anime) => (
+              <CarouselItem
+                key={anime.id}
+                className="sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
+              >
+                <div className="px-1 xl:px-2">
+                  <PopularCard anime={anime} />
                 </div>
               </CarouselItem>
             ))}
@@ -57,4 +95,6 @@ export default function Home() {
       </div>
     </>
   );
-}
+};
+
+export default Home;
