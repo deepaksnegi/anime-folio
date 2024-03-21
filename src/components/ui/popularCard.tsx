@@ -1,10 +1,11 @@
+import { AnimeDetails } from "@/types/ApiResponse";
 import Link from "next/link";
 
-const PopularCard = (props: { anime: PopularAnime }) => {
-  const { title, images, id } = props.anime;
+const PopularCard = (props: { anime: AnimeDetails }) => {
+  const { title, images, mal_id } = props.anime;
   return (
     <Link
-      href={`/details/${id}`}
+      href={`/details/${mal_id}`}
       className="relative cursor-pointer overflow-hidden rounded-xl border shadow-sm dark:border-white/[0.8] dark:shadow-none"
     >
       <div
