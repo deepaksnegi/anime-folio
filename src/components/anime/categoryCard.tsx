@@ -3,17 +3,25 @@ import { CalendarIcon, ChevronRight, Star } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import React from "react";
+import { useGetPopularAnime } from "@/lib/hooks/animeHook";
 
 type Props = {
   heading: string;
-  animeList: AnimeDetails[];
   filterName: string;
 };
 
 const CategoryCard = (props: Props) => {
-  const { heading, animeList } = props;
+  const { heading, filterName } = props;
+  const {
+    popularAnime,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    status,
+  } = useGetPopularAnime(5, filterName);
 
-  const list = animeList.map((anime) => {
+  const list = popularAnime.map((anime) => {
     return (
       <li
         key={anime.mal_id}
@@ -31,13 +39,15 @@ const CategoryCard = (props: Props) => {
           />
         </div>
 
-        <div className="space-y-2">
+        <div className="w-60 space-y-2">
           <span className="font-medium">
             <Link
-              href={`/details/jikan/${anime.mal_id}`}
+              href={`/details/${anime.mal_id}`}
               onClick={() => window.scrollTo({ top: 0 })}
             >
-              {anime.title_english}
+              {anime.title_english.length > 50
+                ? anime.title_english.slice(0, 50) + "..."
+                : anime.title_english}
             </Link>
           </span>
           <div className="flex items-center gap-x-2">
@@ -56,12 +66,15 @@ const CategoryCard = (props: Props) => {
       </li>
     );
   });
-  return (
+
+  return status === "pending" ? (
+    <h3>Loading</h3>
+  ) : (
     <div className="flex flex-col p-5">
       <h4 className="font-bold">{heading}</h4>
       <ul className="max-w-80">{list}</ul>
       <Link
-        href={`/grid/filter?name=${props.filterName}&heading=${props.heading}`}
+        href={`/collection/?filter=${filterName}&heading=${heading}`}
         className="flex items-center gap-x-1 p-2 font-semibold"
         onClick={() => window.scrollTo({ top: 0 })}
       >
