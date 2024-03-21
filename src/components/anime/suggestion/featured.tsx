@@ -1,34 +1,13 @@
-import { useGetTopFivePopularAnime } from "@/lib/hooks/animeHook";
 import React from "react";
 import CategoryCard from "../categoryCard";
 
 const Featured = () => {
-  const { topFiveAnime, error, isLoading } = useGetTopFivePopularAnime();
-
-  return isLoading ? (
-    <h3>Loading</h3>
-  ) : (
+  return (
     <div className="flex flex-wrap px-7 py-5">
-      <CategoryCard
-        heading="Top Airing"
-        animeList={topFiveAnime}
-        filterName="airing"
-      />
-      <CategoryCard
-        heading="Most Popular"
-        animeList={topFiveAnime}
-        filterName="bypopularity"
-      />
-      <CategoryCard
-        heading="Most Favorite"
-        animeList={topFiveAnime}
-        filterName="favorite"
-      />
-      <CategoryCard
-        heading="Top Upcoming"
-        animeList={topFiveAnime}
-        filterName="upcoming"
-      />
+      <CategoryCard heading="Top Airing" filterName="airing" />
+      <CategoryCard heading="Most Popular" filterName="bypopularity" />
+      <CategoryCard heading="Most Favorite" filterName="favorite" />
+      <CategoryCard heading="Top Upcoming" filterName="upcoming" />
     </div>
   );
 };
