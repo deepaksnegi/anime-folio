@@ -1,4 +1,3 @@
-import { PopularAnime } from "@/types/PopularAnime";
 import Link from "next/link";
 
 const PopularCard = (props: { anime: PopularAnime }) => {
