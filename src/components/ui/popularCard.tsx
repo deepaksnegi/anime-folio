@@ -1,9 +1,13 @@
 import { PopularAnime } from "@/types/PopularAnime";
+import Link from "next/link";
 
 const PopularCard = (props: { anime: PopularAnime }) => {
-  const { title, images } = props.anime;
+  const { title, images, id } = props.anime;
   return (
-    <div className="relative cursor-pointer overflow-hidden rounded-xl border shadow-sm dark:border-white/[0.8] dark:shadow-none">
+    <Link
+      href={`/details/${id}`}
+      className="relative cursor-pointer overflow-hidden rounded-xl border shadow-sm dark:border-white/[0.8] dark:shadow-none"
+    >
       <div
         className="flex h-72 flex-col-reverse bg-cover bg-center transition ease-linear hover:scale-105"
         style={{
@@ -19,7 +23,7 @@ const PopularCard = (props: { anime: PopularAnime }) => {
           Adventure, Comedy • 2020
         </p>
       </div>
-    </div>
+    </Link>
   );
 };
 
