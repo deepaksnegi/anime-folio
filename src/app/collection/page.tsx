@@ -2,15 +2,21 @@
 
 import BentoGrid from "@/components/ui/bentoGrid/bentoGrid";
 import BentoGridItem from "@/components/ui/bentoGrid/bentoGridItem";
-import { ChevronDown, FileIcon } from "lucide-react";
+import { ChevronDown, FileIcon, Star } from "lucide-react";
 import React from "react";
 import Image from "next/image";
 import { useGetPopularAnime } from "@/lib/hooks/animeHook";
 import { Button } from "@/components/ui/button";
+import { useSearchParams } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 type Props = {};
 
 const Collection = (props: Props) => {
+  const searchParams = useSearchParams();
+
+  const filter = searchParams.get("filter") ?? undefined;
+
   const {
     popularAnime,
     error,
@@ -18,10 +24,10 @@ const Collection = (props: Props) => {
     hasNextPage,
     isFetchingNextPage,
     status,
-  } = useGetPopularAnime();
+  } = useGetPopularAnime(10, filter);
 
   const Skeleton = ({ imageUrl }: { imageUrl: string }) => (
-    <div className="relative h-[40vh] w-full cursor-pointer">
+    <div className="relative h-full w-full cursor-pointer">
       <Image
         src={imageUrl}
         alt="anime"
@@ -43,28 +49,40 @@ const Collection = (props: Props) => {
 
   const animeList = popularAnime?.map((anime) => ({
     title: anime.title,
-    description: anime.description,
+    description: anime.synopsis,
     header: <Skeleton imageUrl={anime.images.jpg.large_image_url} />,
-    icon: <FileIcon className="h-4 w-4 text-neutral-500" />,
+    icon: (
+      <span className="flex items-center gap-1">
+        <Star size={16} className="text-green-400" />
+        <span className="episode-count">{anime.score}</span>
+      </span>
+    ),
   }));
 
   return (
     <div>
-      <BentoGrid className="px-8">
+      <BentoGrid className="mt-2">
         {animeList?.map((item, i) => (
           <BentoGridItem
             key={i}
             title={item.title}
-            description={item.description}
+            // description={item.description}
             header={item.header}
             tags={item.icon}
             className={i === 3 || i === 6 ? "md:col-span-2" : ""}
           />
         ))}
       </BentoGrid>
-      <div className="fter:h-px my-24 flex items-center before:h-px before:flex-1  before:bg-gray-300 before:content-[''] after:h-px after:flex-1 after:bg-gray-300  after:content-['']">
-        <Button onClick={() => fetchNextPage()}>
-          Load more
+      <div
+        className={cn(
+          "my-24 flex items-center before:h-px before:flex-1  before:bg-gray-300 before:content-[''] after:h-px after:flex-1 after:bg-gray-300  after:content-['']",
+          {
+            hidden: !hasNextPage,
+          },
+        )}
+      >
+        <Button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
+          {isFetchingNextPage ? "Loading..." : "Load more"}
           <ChevronDown className="ml-2" />
         </Button>
       </div>
