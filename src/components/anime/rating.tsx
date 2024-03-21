@@ -1,20 +1,24 @@
 import React from "react";
 
-type Props = {};
+type Props = {
+  rating?: number;
+  totalReviews?: number;
+};
 
 const Rating = (props: Props) => {
+  const { rating, totalReviews } = props;
   return (
     <>
       <div className="mb-5 flex items-center">
         <p className="inline-flex items-center rounded bg-blue-100 p-1.5 text-sm font-semibold text-blue-800 dark:bg-blue-200 dark:text-blue-800">
-          8.7
+          {rating}
         </p>
         <p className="ms-2 font-medium text-gray-900 dark:text-white">
           Excellent
         </p>
         <span className="mx-2 h-1 w-1 rounded-full bg-gray-900 dark:bg-gray-500"></span>
         <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-          376 reviews
+          {totalReviews} reviews
         </p>
       </div>
       <div className="gap-8 sm:grid sm:grid-cols-2">
