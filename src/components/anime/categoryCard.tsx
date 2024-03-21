@@ -1,4 +1,3 @@
-import { AnimeDetails } from "@/types/ApiResponse";
 import { CalendarIcon, ChevronRight, Star } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";

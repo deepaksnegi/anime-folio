@@ -1,28 +1,25 @@
-"use client";
-
 import React from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Rating from "@/components/anime/rating";
-import { useGetRandomAnime } from "@/lib/hooks/animeHook";
-import { PopularAnime } from "@/types/PopularAnime";
+import { AnimeDetails } from "@/types/ApiResponse";
 
 type Props = {
-  anime: PopularAnime;
+  anime: AnimeDetails;
 };
 
 const AnimeDetails = (props: Props) => {
   const { anime } = props;
-  const { rank, description, title, scoreBy, score, images, trailer } = anime;
+  const { rank, synopsis, title, scored_by, score, images, trailer } = anime;
 
   const webp = images?.webp;
 
   return (
     <>
-      <div className="relative h-[30vh] min-h-72 w-full cursor-pointer md:h-[40vh]">
+      <div className="relative h-[30vh] min-h-72 w-full cursor-pointer md:h-[65vh]">
         <Image
-          src={trailer?.images.maximum_image_url ?? webp?.large_image_url}
+          src={trailer.images.maximum_image_url}
           alt="anime"
           className="object-cover"
           quality={100}
@@ -32,7 +29,7 @@ const AnimeDetails = (props: Props) => {
 
         <div className="relative left-1/3 top-1/2 h-72 w-52 cursor-pointer md:left-8 md:h-80 md:w-60">
           <Image
-            src={webp?.image_url}
+            src={webp.image_url}
             alt="anime"
             className="rounded-lg object-cover md:rounded-2xl"
             quality={100}
@@ -60,11 +57,11 @@ const AnimeDetails = (props: Props) => {
             </span>
           </span>
         </div>
-        <p>{description}</p>
+        <p>{synopsis}</p>
       </div>
 
       <div className="px-4">
-        <Rating rating={score} totalReviews={scoreBy} />
+        <Rating rating={score} totalReviews={scored_by} />
         <h3 className="text-2xl font-bold md:text-4xl">Videos</h3>
 
         <h4 className="text-xl font-medium md:text-2xl">Trailer</h4>
@@ -72,7 +69,7 @@ const AnimeDetails = (props: Props) => {
           width="420"
           height="315"
           className="rounded-lg"
-          src="https://www.youtube.com/embed/tgbNymZ7vqY"
+          src={trailer.embed_url}
         ></iframe>
         <h4>Moments</h4>
       </div>

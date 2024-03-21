@@ -4,7 +4,7 @@ import AnimeDetails from "@/components/anime/animeDetails";
 import { useGetAnimeById } from "@/lib/hooks/animeHook";
 
 const Page = ({ params }: { params: { id: string } }) => {
-  const { error, isLoading, anime } = useGetAnimeById(params.id);
+  const { error, isLoading, data } = useGetAnimeById(params.id);
 
   if (isLoading) {
     return "Loading";
@@ -14,7 +14,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     return "Error" + error?.message;
   }
 
-  return <AnimeDetails anime={anime} />;
+  return data && <AnimeDetails anime={data} />;
 };
 
 export default Page;
