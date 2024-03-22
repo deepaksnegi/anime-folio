@@ -3,7 +3,7 @@
 import BentoGrid from "@/components/ui/bentoGrid/bentoGrid";
 import BentoGridItem from "@/components/ui/bentoGrid/bentoGridItem";
 import { ChevronDown, FileIcon, Star } from "lucide-react";
-import React from "react";
+import React, { Suspense } from "react";
 import Image from "next/image";
 import { useGetPopularAnime } from "@/lib/hooks/animeHook";
 import { Button } from "@/components/ui/button";
@@ -90,4 +90,12 @@ const Collection = (props: Props) => {
   );
 };
 
-export default Collection;
+const CollectionPage = () => {
+  return (
+    <Suspense>
+      <Collection />
+    </Suspense>
+  );
+};
+
+export default CollectionPage;
