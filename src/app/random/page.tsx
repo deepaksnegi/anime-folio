@@ -3,6 +3,7 @@
 import React from "react";
 import { useGetRandomAnime } from "@/lib/hooks/animeHook";
 import AnimeDetails from "@/components/anime/animeDetails";
+import Loader from "@/components/ui/loader";
 
 type Props = {};
 
@@ -10,7 +11,7 @@ const RandomSuggestion = (props: Props) => {
   const { data, isLoading, error } = useGetRandomAnime();
 
   if (isLoading) {
-    return "Loading";
+    return <Loader />;
   }
 
   if (error) {

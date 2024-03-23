@@ -10,17 +10,19 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { useGetTopFivePopularAnime } from "@/lib/hooks/animeHook";
+import Loader from "@/components/ui/loader";
+import { useGetPopularAnime } from "@/lib/hooks/animeHook";
 
 const Home = () => {
-  const { topFiveAnime, error, isLoading } =
-    useGetTopFivePopularAnime("airing");
+  const { popularAnime, error, status } = useGetPopularAnime(10, "airing");
 
-  if (isLoading) {
-    return "Loading";
+  const topFiveAnime = popularAnime.slice(0, 5);
+
+  if (status === "pending") {
+    return <Loader />;
   }
 
-  if (error) {
+  if (status === "error") {
     return "Error" + error?.message;
   }
 
@@ -42,7 +44,7 @@ const Home = () => {
             type="button"
           />
           <CarouselContent>
-            {topFiveAnime.map((anime) => (
+            {popularAnime.map((anime) => (
               <CarouselItem
                 key={anime.mal_id}
                 className="basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5"
@@ -62,6 +64,7 @@ const Home = () => {
       </div>
 
       <Featured />
+      <Loader />
     </>
   );
 };

@@ -9,6 +9,7 @@ import { useGetPopularAnime } from "@/lib/hooks/animeHook";
 import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
+import Loader from "@/components/ui/loader";
 
 type Props = {};
 
@@ -40,7 +41,7 @@ const Collection = (props: Props) => {
   );
 
   if (status === "pending") {
-    return "Loading";
+    return <Loader />;
   }
 
   if (status === "error") {
@@ -60,8 +61,10 @@ const Collection = (props: Props) => {
   }));
 
   return (
-    <div>
-      <BentoGrid className="mt-2">
+    <div className="p-6 md:px-32">
+      <h3 className=" text-2xl">Popular Anime</h3>
+
+      <BentoGrid className="mt-8">
         {animeList?.map((item, i) => (
           <BentoGridItem
             key={i}
@@ -75,7 +78,7 @@ const Collection = (props: Props) => {
       </BentoGrid>
       <div
         className={cn(
-          "my-24 flex items-center before:h-px before:flex-1  before:bg-gray-300 before:content-[''] after:h-px after:flex-1 after:bg-gray-300  after:content-['']",
+          "my-16 flex items-center before:h-px before:flex-1  before:bg-gray-300 before:content-[''] after:h-px after:flex-1 after:bg-gray-300  after:content-['']",
           {
             hidden: !hasNextPage,
           },
