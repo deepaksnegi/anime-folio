@@ -1,9 +1,12 @@
-import React from "react";
+import React, { Suspense } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Rating from "@/components/anime/rating";
 import { AnimeDetails } from "@/types/ApiResponse";
+import Video from "@/components/ui/video";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 type Props = {
   anime: AnimeDetails;
@@ -11,7 +14,8 @@ type Props = {
 
 const AnimeDetails = (props: Props) => {
   const { anime } = props;
-  const { rank, synopsis, title, scored_by, score, images, trailer } = anime;
+  const { rank, synopsis, title_english, scored_by, score, images, trailer } =
+    anime;
 
   const webp = images?.webp;
 
@@ -41,7 +45,7 @@ const AnimeDetails = (props: Props) => {
       <div className="mt-52 space-y-4 px-6 py-4 md:mt-4 md:pl-80">
         <div className="gap-x6 flex md:gap-x-10">
           <div className="space-y-2">
-            <h3 className="text-2xl font-bold md:text-4xl">{title}</h3>
+            <h3 className="text-2xl font-bold md:text-4xl">{title_english}</h3>
             <span className="block">
               Sep 29, 2023 to Mar 22, 2024 28 Episodes
             </span>
@@ -61,16 +65,79 @@ const AnimeDetails = (props: Props) => {
       </div>
 
       <div className="px-4">
-        <Rating rating={score} totalReviews={scored_by} />
-        <h3 className="text-2xl font-bold md:text-4xl">Videos</h3>
+        <div className="flex">
+          <div className="flow-root w-2/3">
+            <dl className="-my-3 divide-y divide-gray-100 text-sm">
+              <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                <dt className="font-medium text-gray-900">Japanese Title</dt>
+                <dd className="text-gray-700 sm:col-span-2">{anime.title}</dd>
+              </div>
 
-        <h4 className="text-xl font-medium md:text-2xl">Trailer</h4>
-        <iframe
-          width="420"
-          height="315"
-          className="rounded-lg"
-          src={trailer.embed_url}
-        ></iframe>
+              <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                <dt className="font-medium text-gray-900">Genres</dt>
+                <dd className="text-gray-700 sm:col-span-2">
+                  {anime.genres.map((g) => g.name).join(" ,")}
+                </dd>
+              </div>
+
+              <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                <dt className="font-medium text-gray-900">Source</dt>
+                <dd className="text-gray-700 sm:col-span-2">{anime.source}</dd>
+              </div>
+
+              <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                <dt className="font-medium text-gray-900">Salary</dt>
+                <dd className="text-gray-700 sm:col-span-2">$1,000,000+</dd>
+              </div>
+
+              <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                <dt className="font-medium text-gray-900">Bio</dt>
+                <dd className="text-gray-700 sm:col-span-2">
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Et
+                  facilis debitis explicabo doloremque impedit nesciunt dolorem
+                  facere, dolor quasi veritatis quia fugit aperiam aspernatur
+                  neque molestiae labore aliquam soluta architecto?
+                </dd>
+              </div>
+            </dl>
+          </div>
+          <div className="w-1/3">
+            <Rating rating={score} totalReviews={scored_by} />
+          </div>
+        </div>
+
+        <Tabs defaultValue="Videos" className="w-full">
+          <TabsList>
+            <TabsTrigger value="Videos">Videos</TabsTrigger>
+            <TabsTrigger value="Episodes">Password</TabsTrigger>
+            <TabsTrigger value="Reviews">Reviews</TabsTrigger>
+            <TabsTrigger value="RECOMMENDATIONS">RECOMMENDATIONS</TabsTrigger>
+            <TabsTrigger value="STATS">STATS</TabsTrigger>
+            <TabsTrigger value="CHARACTER">CHARACTER</TabsTrigger>
+          </TabsList>
+          <TabsContent value="Videos">
+            <h4 className="text-xl font-medium md:text-2xl">Trailer</h4>
+            <Suspense
+              fallback={
+                <div className="flex flex-col space-y-3">
+                  <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+                </div>
+              }
+            >
+              <Video src={trailer.embed_url} />
+            </Suspense>
+          </TabsContent>
+          <TabsContent value="Episodes">Change your password here.</TabsContent>
+          <TabsContent value="Reviews">Password</TabsContent>
+          <TabsContent value="RECOMMENDATIONS">Password</TabsContent>
+          <TabsContent
+            value="STATS
+"
+          >
+            Password
+          </TabsContent>
+          <TabsContent value="CHARACTER">Password</TabsContent>
+        </Tabs>
         <h4>Moments</h4>
       </div>
     </>
