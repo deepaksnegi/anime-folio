@@ -43,23 +43,6 @@ const useGetPopularAnime = (limit?: number, filter?: string) => {
   };
 };
 
-const useGetTopFivePopularAnime = (filter?: string) => {
-  const queryKey = ["topFivePopularAnime"];
-
-  const { data, error, isLoading } = useQuery({
-    queryKey,
-    queryFn: () => getAnimeList({ pageParam: 1, limit: 5, filter }),
-  });
-
-  const topFiveAnime = data?.data ?? [];
-
-  return {
-    topFiveAnime,
-    error,
-    isLoading,
-  };
-};
-
 const useGetRandomAnime = () => {
   const queryKey = ["randomAnime"];
 
@@ -90,9 +73,4 @@ const useGetAnimeById = (id: string) => {
   };
 };
 
-export {
-  useGetPopularAnime,
-  useGetTopFivePopularAnime,
-  useGetRandomAnime,
-  useGetAnimeById,
-};
+export { useGetPopularAnime, useGetRandomAnime, useGetAnimeById };
