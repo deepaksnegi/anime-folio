@@ -65,7 +65,6 @@ const Hero = ({ animeList }: { animeList: AnimeDetails[] }) => {
                 </p>
                 <div className="flex gap-3">
                   <Link
-                    onClick={() => window.scrollTo({ top: 0 })}
                     href={trailer.embed_url || `/details/${mal_id}/`}
                     className="flex h-11 items-center gap-x-2 rounded-3xl bg-secondary px-6 text-secondary-foreground hover:bg-secondary/80"
                   >
@@ -74,7 +73,6 @@ const Hero = ({ animeList }: { animeList: AnimeDetails[] }) => {
                   </Link>
                   <Link
                     href={`/details/${mal_id}/`}
-                    onClick={() => window.scrollTo({ top: 0 })}
                     className="flex h-11 items-center gap-x-1 rounded-3xl bg-primary px-6 text-primary-foreground hover:bg-primary/90"
                   >
                     Details <ChevronRight size={18} />

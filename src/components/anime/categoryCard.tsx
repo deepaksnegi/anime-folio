@@ -40,10 +40,7 @@ const CategoryCard = (props: Props) => {
 
         <div className="w-60 space-y-2">
           <span className="font-medium">
-            <Link
-              href={`/details/${anime.mal_id}`}
-              onClick={() => window.scrollTo({ top: 0 })}
-            >
+            <Link href={`/details/${anime.mal_id}`}>
               {anime.title_english.length > 50
                 ? anime.title_english.slice(0, 50) + "..."
                 : anime.title_english}
@@ -75,7 +72,6 @@ const CategoryCard = (props: Props) => {
       <Link
         href={`/collection/?filter=${filterName}&heading=${heading}`}
         className="flex items-center gap-x-1 p-2 font-semibold"
-        onClick={() => window.scrollTo({ top: 0 })}
       >
         View More
         <ChevronRight size={16} />
