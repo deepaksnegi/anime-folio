@@ -2,20 +2,28 @@
 
 import AnimeDetails from "@/components/anime/animeDetails";
 import Loader from "@/components/ui/loader";
-import { useGetAnimeById } from "@/lib/hooks/animeHook";
+import { useGetAnimeById, useGetAnimeStatistics } from "@/lib/hooks/animeHook";
 
 const Page = ({ params }: { params: { id: string } }) => {
-  const { error, isLoading, data } = useGetAnimeById(params.id);
+  const { id } = params;
 
-  if (isLoading) {
+  const anime = useGetAnimeById(id);
+  const statistics = useGetAnimeStatistics(id);
+
+  if (anime.isLoading && statistics.isLoading) {
     return <Loader />;
   }
 
-  if (error) {
-    return "Error" + error?.message;
+  if (anime.error && statistics.error) {
+    return "Error" + anime.error?.message;
   }
 
-  return data && <AnimeDetails anime={data} />;
+  return (
+    anime.data &&
+    statistics.data && (
+      <AnimeDetails anime={anime.data} statistics={statistics.data} />
+    )
+  );
 };
 
 export default Page;

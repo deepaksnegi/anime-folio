@@ -3,19 +3,22 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Rating from "@/components/anime/rating";
-import { AnimeDetails } from "@/types/ApiResponse";
+import { AnimeDetails } from "@/types/AnimeResponse";
 import Video from "@/components/ui/video";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Statistics } from "@/types/StatisticsResponse";
 
 type Props = {
   anime: AnimeDetails;
+  statistics: Statistics;
 };
 
 const AnimeDetails = (props: Props) => {
-  const { anime } = props;
+  const { anime, statistics } = props;
   const { rank, synopsis, title_english, scored_by, score, images, trailer } =
     anime;
+
+  const { scores } = statistics;
 
   const webp = images?.webp;
 
@@ -23,7 +26,7 @@ const AnimeDetails = (props: Props) => {
     <>
       <div className="relative h-[30vh] min-h-72 w-full cursor-pointer md:h-[65vh]">
         <Image
-          src={trailer.images.maximum_image_url}
+          src={trailer.images.maximum_image_url ?? images.webp.image_url}
           alt="anime"
           className="object-cover"
           quality={100}
@@ -46,99 +49,94 @@ const AnimeDetails = (props: Props) => {
         <div className="gap-x6 flex md:gap-x-10">
           <div className="space-y-2">
             <h3 className="text-2xl font-bold md:text-4xl">{title_english}</h3>
-            <span className="block">
-              Sep 29, 2023 to Mar 22, 2024 28 Episodes
-            </span>
+            <span className="block">Sep 29, 2023 to Mar 22, 2024</span>
             <Button>
               <Plus className="mr-2" />
               Add to List
             </Button>
           </div>
-          <span>
+          {/* <span>
             Rating:
             <span className="ml-1 text-2xl font-bold italic text-green-300">
               #{rank}
             </span>
-          </span>
+          </span> */}
+          {anime.year} | {anime.genres.map((g) => g.name).join(" | ")}
         </div>
         <p>{synopsis}</p>
       </div>
 
-      <div className="px-4">
-        <div className="flex">
-          <div className="flow-root w-2/3">
-            <dl className="-my-3 divide-y divide-gray-100 text-sm">
-              <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                <dt className="font-medium text-gray-900">Japanese Title</dt>
-                <dd className="text-gray-700 sm:col-span-2">{anime.title}</dd>
-              </div>
+      <h3 className="px-4 py-6 text-2xl">More Details</h3>
 
-              <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                <dt className="font-medium text-gray-900">Genres</dt>
-                <dd className="text-gray-700 sm:col-span-2">
-                  {anime.genres.map((g) => g.name).join(" ,")}
-                </dd>
-              </div>
-
-              <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                <dt className="font-medium text-gray-900">Source</dt>
-                <dd className="text-gray-700 sm:col-span-2">{anime.source}</dd>
-              </div>
-
-              <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                <dt className="font-medium text-gray-900">Salary</dt>
-                <dd className="text-gray-700 sm:col-span-2">$1,000,000+</dd>
-              </div>
-
-              <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                <dt className="font-medium text-gray-900">Bio</dt>
-                <dd className="text-gray-700 sm:col-span-2">
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Et
-                  facilis debitis explicabo doloremque impedit nesciunt dolorem
-                  facere, dolor quasi veritatis quia fugit aperiam aspernatur
-                  neque molestiae labore aliquam soluta architecto?
-                </dd>
-              </div>
-            </dl>
-          </div>
-          <div className="w-1/3">
-            <Rating rating={score} totalReviews={scored_by} />
-          </div>
+      <div className="grid grid-cols-1 gap-y-4 px-4 md:grid-cols-3 md:gap-y-8 lg:grid-cols-4">
+        <div>
+          <dt className="font-medium text-gray-900">Premiered</dt>
+          <dd className="text-gray-700 sm:col-span-2">
+            {anime.season} | {anime.year}
+          </dd>
         </div>
 
-        <Tabs defaultValue="Videos" className="w-full">
-          <TabsList>
-            <TabsTrigger value="Videos">Videos</TabsTrigger>
-            <TabsTrigger value="Episodes">Password</TabsTrigger>
-            <TabsTrigger value="Reviews">Reviews</TabsTrigger>
-            <TabsTrigger value="RECOMMENDATIONS">RECOMMENDATIONS</TabsTrigger>
-            <TabsTrigger value="STATS">STATS</TabsTrigger>
-            <TabsTrigger value="CHARACTER">CHARACTER</TabsTrigger>
-          </TabsList>
-          <TabsContent value="Videos">
-            <h4 className="text-xl font-medium md:text-2xl">Trailer</h4>
-            <Suspense
-              fallback={
-                <div className="flex flex-col space-y-3">
-                  <Skeleton className="h-[125px] w-[250px] rounded-xl" />
-                </div>
-              }
-            >
-              <Video src={trailer.embed_url} />
-            </Suspense>
-          </TabsContent>
-          <TabsContent value="Episodes">Change your password here.</TabsContent>
-          <TabsContent value="Reviews">Password</TabsContent>
-          <TabsContent value="RECOMMENDATIONS">Password</TabsContent>
-          <TabsContent
-            value="STATS
-"
-          >
-            Password
-          </TabsContent>
-          <TabsContent value="CHARACTER">Password</TabsContent>
-        </Tabs>
-        <h4>Moments</h4>
+        <div>
+          <dt className="font-medium text-gray-900">Japanese Title</dt>
+          <dd className="text-gray-700 sm:col-span-2">
+            {anime.title_japanese}
+          </dd>
+        </div>
+        <div>
+          <dt className="font-medium text-gray-900">Rating</dt>
+          <dd className="text-gray-700 sm:col-span-2">{anime.rating}</dd>
+        </div>
+        <div>
+          <dt className="font-medium text-gray-900">Type</dt>
+          <dd className="text-gray-700 sm:col-span-2">{anime.type}</dd>
+        </div>
+        <div>
+          <dt className="font-medium text-gray-900">Episodes</dt>
+          <dd className="text-gray-700 sm:col-span-2">{anime.episodes}</dd>
+        </div>
+        <div>
+          <dt className="font-medium text-gray-900">Duration</dt>
+          <dd className="text-gray-700 sm:col-span-2">{anime.duration}</dd>
+        </div>
+        <div>
+          <dt className="font-medium text-gray-900">Status</dt>
+          <dd className="text-gray-700 sm:col-span-2">{anime.status}</dd>
+        </div>
+        <div>
+          <dt className="font-medium text-gray-900">Themes</dt>
+          <dd className="text-gray-700 sm:col-span-2">
+            {anime.themes.map(({ name }) => name).join(", ")}
+          </dd>
+        </div>
+        <div>
+          <dt className="font-medium text-gray-900">Built By</dt>
+          <dd className="text-gray-700 sm:col-span-2">
+            {anime.studios.map((s) => s.name).join(", ")}
+          </dd>
+        </div>
+        <div>
+          <dt className="font-medium text-gray-900">Also Known As</dt>
+          <dd className="text-gray-700 sm:col-span-2">
+            {anime.title_synonyms.join(", ")}
+          </dd>
+        </div>
+      </div>
+      <div className="w-full p-4 md:w-2/3">
+        <h3 className="py-6 text-2xl">What users are saying</h3>
+        <Rating rating={score} totalReviews={scored_by} scores={scores} />
+      </div>
+
+      <div className="aspect-video w-full max-w-[812px] px-4">
+        <h4 className="text-xl font-medium md:text-2xl">Trailer</h4>
+        <Suspense
+          fallback={
+            <div className="flex flex-col space-y-3">
+              <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+            </div>
+          }
+        >
+          <Video src={trailer.embed_url} />
+        </Suspense>
       </div>
     </>
   );
