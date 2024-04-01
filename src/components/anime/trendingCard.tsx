@@ -1,4 +1,4 @@
-import { AnimeDetails } from "@/types/ApiResponse";
+import { AnimeDetails } from "@/types/AnimeResponse";
 import { Star } from "lucide-react";
 import Image from "next/image";
 import React from "react";
