@@ -1,4 +1,4 @@
-import { AnimeDetails } from "@/types/ApiResponse";
+import { AnimeDetails } from "@/types/AnimeResponse";
 import Link from "next/link";
 
 const PopularCard = (props: { anime: AnimeDetails }) => {
