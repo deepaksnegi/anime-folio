@@ -1,6 +1,7 @@
 "use client";
 
 import Featured from "@/components/anime/suggestion/featured";
+import Suggestions from "@/components/anime/suggestion/suggestions";
 import TrendingCard from "@/components/anime/trendingCard";
 import Hero from "@/components/hero";
 import {
@@ -64,6 +65,8 @@ const Home = () => {
       </div>
 
       <Featured />
+
+      <Suggestions />
       <Loader />
     </>
   );

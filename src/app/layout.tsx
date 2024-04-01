@@ -10,7 +10,7 @@ import {
   dehydrate,
 } from "@tanstack/react-query";
 import { getAnimeList } from "@/lib/services/animeService";
-import { APIType } from "@/types/ApiResponse";
+import { APIType } from "@/types/AnimeResponse";
 
 const inter = Inter({ subsets: ["latin"] });
 
