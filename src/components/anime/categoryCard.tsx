@@ -21,6 +21,7 @@ const CategoryCard = (props: Props) => {
   } = useGetPopularAnime(5, filterName);
 
   const list = popularAnime.map((anime) => {
+    const title = anime.title_english ?? anime.title;
     return (
       <li
         key={anime.mal_id}
@@ -41,9 +42,7 @@ const CategoryCard = (props: Props) => {
         <div className="w-60 space-y-2">
           <span className="font-medium">
             <Link href={`/details/${anime.mal_id}`}>
-              {anime.title_english.length > 50
-                ? anime.title_english.slice(0, 50) + "..."
-                : anime.title_english}
+              {title.length > 50 ? title.slice(0, 50) + "..." : title}
             </Link>
           </span>
           <div className="flex items-center gap-x-2">
