@@ -16,7 +16,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { AnimeDetails } from "@/types/ApiResponse";
+import { AnimeDetails } from "@/types/AnimeResponse";
 
 type Props = {};
 
