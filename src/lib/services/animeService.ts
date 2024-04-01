@@ -1,14 +1,16 @@
+import { Statistics, StatisticsResponse } from "@/types/StatisticsResponse";
 import jikanClient from "../clients/jikanClient";
-import { APIType, AnimeDetails } from "@/types/ApiResponse";
+import { APIType, AnimeDetails } from "@/types/AnimeResponse";
 
 export interface QueryParams {
   pageParam: number;
   limit?: number;
   filter?: string;
+  type?: string;
 }
 
 const getAnimeList = async (queryParams: QueryParams) => {
-  const { pageParam = 1, limit = 10, filter } = queryParams;
+  const { pageParam = 1, limit = 10, filter, type } = queryParams;
 
   const queryParameters: Record<string, string> = {
     page: pageParam.toString(),
@@ -17,6 +19,10 @@ const getAnimeList = async (queryParams: QueryParams) => {
 
   if (filter) {
     queryParameters.filter = filter;
+  }
+
+  if (type) {
+    queryParameters.type = type;
   }
 
   const response = await jikanClient.get<APIType>(
@@ -34,7 +40,7 @@ const getRandomAnime = async () => {
   return response.data.data;
 };
 
-const getAnimeByID = async (id: string) => {
+const getAnimeById = async (id: string) => {
   const response = await jikanClient.get<{ data: AnimeDetails }>(
     `/anime/${id}`,
   );
@@ -42,4 +48,12 @@ const getAnimeByID = async (id: string) => {
   return response.data.data;
 };
 
-export { getAnimeList, getRandomAnime, getAnimeByID };
+const getAnimeStatistics = async (id: string) => {
+  const response = await jikanClient.get<StatisticsResponse>(
+    `/anime/${id}/statistics`,
+  );
+
+  return response.data.data;
+};
+
+export { getAnimeList, getRandomAnime, getAnimeById, getAnimeStatistics };

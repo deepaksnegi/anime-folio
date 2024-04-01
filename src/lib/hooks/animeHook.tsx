@@ -2,13 +2,14 @@
 
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {
-  getAnimeByID,
+  getAnimeById,
   getAnimeList,
+  getAnimeStatistics,
   getRandomAnime,
 } from "../services/animeService";
 
-const useGetPopularAnime = (limit?: number, filter?: string) => {
-  const queryKey = ["popularAnime", filter, limit];
+const useGetPopularAnime = (limit?: number, filter?: string, type?: string) => {
+  const queryKey = ["popularAnime", filter, limit, type];
 
   const {
     data,
@@ -19,7 +20,8 @@ const useGetPopularAnime = (limit?: number, filter?: string) => {
     status,
   } = useInfiniteQuery({
     queryKey,
-    queryFn: ({ pageParam }) => getAnimeList({ pageParam, filter, limit }),
+    queryFn: ({ pageParam }) =>
+      getAnimeList({ pageParam, filter, limit, type }),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
       const nextPage = lastPage.pagination.has_next_page
@@ -63,7 +65,7 @@ const useGetAnimeById = (id: string) => {
 
   const { data, error, isLoading } = useQuery({
     queryKey,
-    queryFn: () => getAnimeByID(id),
+    queryFn: () => getAnimeById(id),
   });
 
   return {
@@ -73,4 +75,25 @@ const useGetAnimeById = (id: string) => {
   };
 };
 
-export { useGetPopularAnime, useGetRandomAnime, useGetAnimeById };
+const useGetAnimeStatistics = (id: string, enabled?: boolean) => {
+  const queryKey = ["getAnimeStatistics", id];
+
+  const { data, error, isLoading } = useQuery({
+    queryKey,
+    queryFn: () => getAnimeStatistics(id),
+    enabled,
+  });
+
+  return {
+    data,
+    error,
+    isLoading,
+  };
+};
+
+export {
+  useGetPopularAnime,
+  useGetRandomAnime,
+  useGetAnimeById,
+  useGetAnimeStatistics,
+};
