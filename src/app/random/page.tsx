@@ -1,24 +1,38 @@
 "use client";
 
 import React from "react";
-import { useGetRandomAnime } from "@/lib/hooks/animeHook";
+import {
+  useGetAnimeStatistics,
+  useGetRandomAnime,
+} from "@/lib/hooks/animeHook";
 import AnimeDetails from "@/components/anime/animeDetails";
 import Loader from "@/components/ui/loader";
 
 type Props = {};
 
 const RandomSuggestion = (props: Props) => {
-  const { data, isLoading, error } = useGetRandomAnime();
+  const anime = useGetRandomAnime();
 
-  if (isLoading) {
+  const id = anime.data?.mal_id;
+  const statistics = useGetAnimeStatistics(
+    id?.toString() ?? "",
+    id != undefined,
+  );
+
+  if (anime.isLoading && statistics.isLoading) {
     return <Loader />;
   }
 
-  if (error) {
-    return "Error" + error?.message;
+  if (anime.error && statistics.error) {
+    return "Error" + anime.error?.message;
   }
 
-  return data && <AnimeDetails anime={data} />;
+  return (
+    anime.data &&
+    statistics.data && (
+      <AnimeDetails anime={anime.data} statistics={statistics.data} />
+    )
+  );
 };
 
 export default RandomSuggestion;
