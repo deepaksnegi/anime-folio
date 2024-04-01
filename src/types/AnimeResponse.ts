@@ -51,8 +51,15 @@ export interface AnimeDetails {
   studios: Studio[];
   genres: Genre[];
   explicit_genres: any[];
-  themes: any[];
+  themes: Theme[];
   demographics: Demographic[];
+}
+
+export interface Theme {
+  mal_id: number;
+  name: string;
+  type: string;
+  url: string;
 }
 
 export interface Images {
