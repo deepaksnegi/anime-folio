@@ -1,7 +1,7 @@
 import { useGetPopularAnime } from "@/lib/hooks/animeHook";
 import React from "react";
-import TrendingCard from "../trendingCard";
-import Loader from "@/components/ui/loader";
+import TrendingCard from "@/components/anime/trendingCard";
+import PopularAnimeSkeleton from "@/components/loaders/popularAnimeSkeleton";
 
 type Props = {};
 
@@ -23,7 +23,7 @@ const Suggestions = (props: Props) => {
     } = useGetPopularAnime(12, undefined, filter);
 
     if (status === "pending") {
-      <Loader />;
+      return <PopularAnimeSkeleton />;
     }
 
     return (

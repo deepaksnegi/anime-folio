@@ -11,8 +11,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import Loader from "@/components/ui/loader";
+import Loader from "@/components/loaders/loader";
 import { useGetPopularAnime } from "@/lib/hooks/animeHook";
+import PopularAnimeSkeleton from "@/components/loaders/popularAnimeSkeleton";
 
 const Home = () => {
   const { popularAnime, error, status } = useGetPopularAnime(10, "airing");
@@ -67,6 +68,8 @@ const Home = () => {
       <Featured />
 
       <Suggestions />
+
+      <PopularAnimeSkeleton />
       <Loader />
     </>
   );

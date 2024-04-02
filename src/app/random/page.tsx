@@ -6,7 +6,7 @@ import {
   useGetRandomAnime,
 } from "@/lib/hooks/animeHook";
 import AnimeDetails from "@/components/anime/animeDetails";
-import Loader from "@/components/ui/loader";
+import Loader from "@/components/loaders/loader";
 
 type Props = {};
 

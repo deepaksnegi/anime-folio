@@ -9,7 +9,7 @@ import { useGetPopularAnime } from "@/lib/hooks/animeHook";
 import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
-import Loader from "@/components/ui/loader";
+import Loader from "@/components/loaders/loader";
 
 type Props = {};
 

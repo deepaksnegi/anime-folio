@@ -1,7 +1,7 @@
 "use client";
 
 import AnimeDetails from "@/components/anime/animeDetails";
-import Loader from "@/components/ui/loader";
+import Loader from "@/components/loaders/loader";
 import { useGetAnimeById, useGetAnimeStatistics } from "@/lib/hooks/animeHook";
 
 const Page = ({ params }: { params: { id: string } }) => {
