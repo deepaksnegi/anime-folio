@@ -7,14 +7,16 @@ export interface QueryParams {
   limit?: number;
   filter?: string;
   type?: string;
+  sfw?: boolean;
 }
 
 const getAnimeList = async (queryParams: QueryParams) => {
-  const { pageParam = 1, limit = 10, filter, type } = queryParams;
+  const { pageParam = 1, limit = 10, filter, type, sfw = true } = queryParams;
 
   const queryParameters: Record<string, string> = {
     page: pageParam.toString(),
     limit: limit.toString(),
+    sfw: sfw.toString(),
   };
 
   if (filter) {
