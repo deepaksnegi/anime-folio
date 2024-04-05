@@ -1,7 +1,14 @@
 import React, { Suspense } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import {
+  CalendarClock,
+  Check,
+  Eye,
+  PauseCircle,
+  Plus,
+  Trash2,
+} from "lucide-react";
 import Rating from "@/components/anime/rating";
 import { AnimeDetails } from "@/types/AnimeResponse";
 import Video from "@/components/ui/video";
@@ -15,10 +22,22 @@ type Props = {
 
 const AnimeDetails = (props: Props) => {
   const { anime, statistics } = props;
-  const { rank, synopsis, title_english, scored_by, score, images, trailer } =
-    anime;
+  const {
+    rank,
+    synopsis,
+    title_english,
+    scored_by,
+    score,
+    images,
+    trailer,
+    aired,
+  } = anime;
 
-  const { scores } = statistics;
+  const airedFrom = new Date(aired.from).toDateString();
+  const airedTo = new Date(aired.to).toDateString();
+
+  const { scores, watching, completed, on_hold, dropped, plan_to_watch } =
+    statistics;
 
   const webp = images?.webp;
 
@@ -49,7 +68,9 @@ const AnimeDetails = (props: Props) => {
         <div className="gap-x6 flex md:gap-x-10">
           <div className="space-y-2">
             <h3 className="text-2xl font-bold md:text-4xl">{title_english}</h3>
-            <span className="block">Sep 29, 2023 to Mar 22, 2024</span>
+            <span className="block">
+              {airedFrom} to {airedTo}
+            </span>
             <Button>
               <Plus className="mr-2" />
               Add to List
@@ -121,9 +142,62 @@ const AnimeDetails = (props: Props) => {
           </dd>
         </div>
       </div>
-      <div className="w-full p-4 md:w-2/3">
-        <h3 className="py-6 text-2xl">What users are saying</h3>
-        <Rating rating={score} totalReviews={scored_by} scores={scores} />
+      <div className="grid grid-cols-1 gap-y-4  p-4 px-4 md:gap-y-8 lg:grid-cols-2">
+        <div>
+          <h3 className="py-6 text-2xl">What users are saying</h3>
+          <Rating rating={score} totalReviews={scored_by} scores={scores} />
+        </div>
+        <div>
+          <h3 className="py-6 text-2xl">Anime Fandom Overview</h3>
+
+          <div className="flex h-fit flex-wrap justify-evenly gap-x-4  gap-y-8 rounded-lg border border-gray-100 bg-white px-6 py-8 dark:border-gray-800 dark:bg-gray-700 ">
+            <div className="flex items-center gap-x-4">
+              <span className="rounded-full bg-teal-100 p-3 text-teal-600">
+                <Eye />
+              </span>
+              <p className="text-2xl font-medium text-gray-900 dark:text-white">
+                {watching}
+              </p>
+              {/* <span className="text-sm text-gray-500">Watching</span> */}
+            </div>
+            <div className="flex items-center gap-x-4">
+              <span className="rounded-full bg-green-100 p-3 text-green-600">
+                <Check />
+              </span>
+              <p className="text-2xl font-medium text-gray-900 dark:text-white">
+                {completed}
+              </p>
+              {/* <span className="text-sm text-gray-500">Watching</span> */}
+            </div>
+            <div className="flex flex-wrap items-center gap-x-4">
+              <span className="rounded-full bg-red-100 p-3 text-red-600">
+                <Trash2 />
+              </span>
+              <p className="text-2xl font-medium text-gray-900 dark:text-white">
+                {dropped}
+              </p>
+              {/* <span className="text-sm text-gray-500">Watching</span> */}
+            </div>
+            <div className="flex items-center gap-x-4">
+              <span className="rounded-full bg-yellow-100 p-3 text-yellow-600">
+                <CalendarClock />
+              </span>
+              <p className="text-2xl font-medium text-gray-900 dark:text-white">
+                {plan_to_watch}
+              </p>
+              {/* <span className="text-sm text-gray-500">Watching</span> */}
+            </div>
+            <div className="flex items-center gap-x-4">
+              <span className="rounded-full bg-blue-100 p-3 text-blue-600">
+                <PauseCircle />
+              </span>
+              <p className="text-2xl font-medium text-gray-900 dark:text-white">
+                {on_hold}
+              </p>
+              {/* <span className="text-sm text-gray-500">Watching</span> */}
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="aspect-video w-full max-w-[812px] px-4">

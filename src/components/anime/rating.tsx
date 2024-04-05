@@ -1,3 +1,4 @@
+import { ratingToDescription } from "@/lib/utils";
 import { Score } from "@/types/StatisticsResponse";
 import React from "react";
 
@@ -16,7 +17,7 @@ const Rating = (props: Props) => {
           {rating}
         </p>
         <p className="ms-2 font-medium text-gray-900 dark:text-white">
-          Excellent
+          {rating ? ratingToDescription(rating) : "Unknown"}
         </p>
         <span className="mx-2 h-1 w-1 rounded-full bg-gray-900 dark:bg-gray-500"></span>
         <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -78,11 +79,12 @@ const Rating = (props: Props) => {
         </p>
         <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">
           5
+        </p>{" "}
+        <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+          {totalReviews} ratings
         </p>
       </div>
-      <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-        {totalReviews} ratings
-      </p>
+
       {scores.map(({ score, votes, percentage }) => (
         <div className="mt-4 flex items-center" key={score}>
           <a
