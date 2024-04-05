@@ -41,7 +41,7 @@ const Collection = (props: Props) => {
   );
 
   if (status === "pending") {
-    return <Loader />;
+    return <Loader showDialog />;
   }
 
   if (status === "error") {
@@ -85,7 +85,7 @@ const Collection = (props: Props) => {
         )}
       >
         <Button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
-          {isFetchingNextPage ? "Loading..." : "Load more"}
+          {isFetchingNextPage ? <Loader /> : "Load more"}
           <ChevronDown className="ml-2" />
         </Button>
       </div>

@@ -20,7 +20,7 @@ const RandomSuggestion = (props: Props) => {
   );
 
   if (anime.isLoading && statistics.isLoading) {
-    return <Loader />;
+    return <Loader showDialog />;
   }
 
   if (anime.error && statistics.error) {

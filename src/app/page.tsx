@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/carousel";
 import Loader from "@/components/loaders/loader";
 import { useGetPopularAnime } from "@/lib/hooks/animeHook";
-import PopularAnimeSkeleton from "@/components/loaders/popularAnimeSkeleton";
 
 const Home = () => {
   const { popularAnime, error, status } = useGetPopularAnime(10, "airing");
@@ -21,7 +20,7 @@ const Home = () => {
   const topFiveAnime = popularAnime.slice(0, 5);
 
   if (status === "pending") {
-    return <Loader />;
+    return <Loader showDialog />;
   }
 
   if (status === "error") {
@@ -68,9 +67,6 @@ const Home = () => {
       <Featured />
 
       <Suggestions />
-
-      <PopularAnimeSkeleton />
-      <Loader />
     </>
   );
 };

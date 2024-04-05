@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import React from "react";
 import { useGetPopularAnime } from "@/lib/hooks/animeHook";
+import Loader from "../loaders/loader";
 
 type Props = {
   heading: string;
@@ -23,7 +24,7 @@ const CategoryCard = (props: Props) => {
   const list = popularAnime.map((anime) => {
     const title = anime.title_english ?? anime.title;
     return (
-      <li
+      <div
         key={anime.mal_id}
         className="flex items-center gap-x-5 border-b-2 p-4"
       >
@@ -58,16 +59,16 @@ const CategoryCard = (props: Props) => {
             <div className="text-sm">{anime.type}</div>
           </div>
         </div>
-      </li>
+      </div>
     );
   });
 
   return status === "pending" ? (
-    <h3>Loading</h3>
+    <Loader />
   ) : (
     <div className="flex flex-col p-5">
       <h4 className="font-bold">{heading}</h4>
-      <ul className="max-w-80">{list}</ul>
+      <div className="max-w-80">{list}</div>
       <Link
         href={`/collection/?filter=${filterName}&heading=${heading}`}
         className="flex items-center gap-x-1 p-2 font-semibold"
