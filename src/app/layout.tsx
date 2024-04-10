@@ -11,6 +11,7 @@ import {
 } from "@tanstack/react-query";
 import { getAnimeList } from "@/lib/services/animeService";
 import { APIType } from "@/types/AnimeResponse";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -90,7 +91,10 @@ export default async function RootLayout({
           <ThemeProvider defaultTheme="dark" enableSystem attribute="class">
             <Sidebar />
             <HydrationBoundary state={dehydrate(queryClient)}>
-              <main className="pt-16">{children}</main>
+              <main className="pt-16">
+                {children}
+                <Toaster />
+              </main>
             </HydrationBoundary>
           </ThemeProvider>
         </ReactQueryProvider>
