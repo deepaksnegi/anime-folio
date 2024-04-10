@@ -3,6 +3,7 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {
   getAnimeById,
+  getAnimeCharacters,
   getAnimeList,
   getAnimeStatistics,
   getRandomAnime,
@@ -91,9 +92,26 @@ const useGetAnimeStatistics = (id: string, enabled?: boolean) => {
   };
 };
 
+const useGetAnimeCharacters = (id: string, enabled?: boolean) => {
+  const queryKey = ["getAnimeCharacters", id];
+
+  const { data, error, isLoading } = useQuery({
+    queryKey,
+    queryFn: () => getAnimeCharacters(id),
+    enabled,
+  });
+
+  return {
+    data,
+    error,
+    isLoading,
+  };
+};
+
 export {
   useGetPopularAnime,
   useGetRandomAnime,
   useGetAnimeById,
   useGetAnimeStatistics,
+  useGetAnimeCharacters,
 };

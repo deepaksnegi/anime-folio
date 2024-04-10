@@ -1,6 +1,7 @@
-import { Statistics, StatisticsResponse } from "@/types/StatisticsResponse";
+import { Statistics } from "@/types/StatisticsResponse";
 import jikanClient from "../clients/jikanClient";
-import { APIType, AnimeDetails } from "@/types/AnimeResponse";
+import { APIType, AnimeInformation } from "@/types/AnimeResponse";
+import { AnimeCharacter } from "@/types/AnimeCharacters";
 
 export interface QueryParams {
   pageParam: number;
@@ -35,7 +36,7 @@ const getAnimeList = async (queryParams: QueryParams) => {
 };
 
 const getRandomAnime = async () => {
-  const response = await jikanClient.get<{ data: AnimeDetails }>(
+  const response = await jikanClient.get<{ data: AnimeInformation }>(
     "/random/anime",
   );
 
@@ -43,7 +44,7 @@ const getRandomAnime = async () => {
 };
 
 const getAnimeById = async (id: string) => {
-  const response = await jikanClient.get<{ data: AnimeDetails }>(
+  const response = await jikanClient.get<{ data: AnimeInformation }>(
     `/anime/${id}`,
   );
 
@@ -51,11 +52,25 @@ const getAnimeById = async (id: string) => {
 };
 
 const getAnimeStatistics = async (id: string) => {
-  const response = await jikanClient.get<StatisticsResponse>(
+  const response = await jikanClient.get<{ data: Statistics }>(
     `/anime/${id}/statistics`,
   );
 
   return response.data.data;
 };
 
-export { getAnimeList, getRandomAnime, getAnimeById, getAnimeStatistics };
+const getAnimeCharacters = async (id: string) => {
+  const response = await jikanClient.get<{ data: AnimeCharacter[] }>(
+    `/anime/${id}/characters`,
+  );
+
+  return response.data.data;
+};
+
+export {
+  getAnimeList,
+  getRandomAnime,
+  getAnimeById,
+  getAnimeStatistics,
+  getAnimeCharacters,
+};
