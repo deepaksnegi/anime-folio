@@ -1,7 +1,7 @@
-import { AnimeDetails } from "@/types/AnimeResponse";
+import { AnimeInformation } from "@/types/AnimeResponse";
 import Link from "next/link";
 
-const PopularCard = (props: { anime: AnimeDetails }) => {
+const PopularCard = (props: { anime: AnimeInformation }) => {
   const { title, images, mal_id } = props.anime;
   return (
     <Link

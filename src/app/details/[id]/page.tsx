@@ -2,13 +2,18 @@
 
 import AnimeDetails from "@/components/anime/animeDetails";
 import Loader from "@/components/loaders/loader";
-import { useGetAnimeById, useGetAnimeStatistics } from "@/lib/hooks/animeHook";
+import {
+  useGetAnimeById,
+  useGetAnimeCharacters,
+  useGetAnimeStatistics,
+} from "@/lib/hooks/animeHook";
 
 const Page = ({ params }: { params: { id: string } }) => {
   const { id } = params;
 
   const anime = useGetAnimeById(id);
   const statistics = useGetAnimeStatistics(id);
+  const animeCharacters = useGetAnimeCharacters(id, !anime.isLoading);
 
   if (anime.isLoading && statistics.isLoading) {
     return <Loader />;

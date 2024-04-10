@@ -1,6 +1,6 @@
 export interface APIType {
   pagination: Pagination;
-  data: AnimeDetails[];
+  data: AnimeInformation[];
 }
 
 export interface Pagination {
@@ -16,7 +16,7 @@ export interface PaginationDetails {
   per_page: number;
 }
 
-export interface AnimeDetails {
+export interface AnimeInformation {
   mal_id: number;
   url: string;
   images: Images;
