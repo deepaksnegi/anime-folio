@@ -1,22 +1,29 @@
 import React, { Suspense } from "react";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   CalendarClock,
   Check,
   Eye,
+  ListCollapse,
   PauseCircle,
+  PersonStanding,
   Plus,
+  Star,
   Trash2,
+  VideoIcon,
 } from "lucide-react";
 import Rating from "@/components/anime/rating";
-import { AnimeDetails } from "@/types/AnimeResponse";
+import { AnimeInformation } from "@/types/AnimeResponse";
 import Video from "@/components/ui/video";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Statistics } from "@/types/StatisticsResponse";
+import Link from "next/link";
+import { Separator } from "../ui/separator";
+import AnimeDetailsTab from "./animeDetailsTab/animeDetailsTab";
 
 type Props = {
-  anime: AnimeDetails;
+  anime: AnimeInformation;
   statistics: Statistics;
 };
 
@@ -31,6 +38,7 @@ const AnimeDetails = (props: Props) => {
     images,
     trailer,
     aired,
+    mal_id,
   } = anime;
 
   const airedFrom = new Date(aired.from).toDateString();
@@ -71,147 +79,26 @@ const AnimeDetails = (props: Props) => {
             <span className="block">
               {airedFrom} to {airedTo}
             </span>
-            <Button>
+            <Link
+              href={`/add-anime/${mal_id}`}
+              className={buttonVariants({ variant: "default" })}
+            >
               <Plus className="mr-2" />
               Add to List
-            </Button>
+            </Link>
           </div>
           {/* <span>
             Rating:
             <span className="ml-1 text-2xl font-bold italic text-green-300">
-              #{rank}
+            #{rank}
             </span>
           </span> */}
           {anime.year} | {anime.genres.map((g) => g.name).join(" | ")}
         </div>
         <p>{synopsis}</p>
       </div>
-
-      <h3 className="px-4 py-6 text-2xl">More Details</h3>
-
-      <div className="grid grid-cols-1 gap-y-4 px-4 md:grid-cols-3 md:gap-y-8 lg:grid-cols-4">
-        <div>
-          <dt className="font-medium">Premiered</dt>
-          <dd className="text-gray-700 sm:col-span-2">
-            {anime.season} | {anime.year}
-          </dd>
-        </div>
-
-        <div>
-          <dt className="font-medium">Japanese Title</dt>
-          <dd className="text-gray-500 sm:col-span-2">
-            {anime.title_japanese}
-          </dd>
-        </div>
-        <div>
-          <dt className="font-medium">Rating</dt>
-          <dd className="text-gray-500 sm:col-span-2">{anime.rating}</dd>
-        </div>
-        <div>
-          <dt className="font-medium">Type</dt>
-          <dd className="text-gray-500 sm:col-span-2">{anime.type}</dd>
-        </div>
-        <div>
-          <dt className="font-medium">Episodes</dt>
-          <dd className="text-gray-500 sm:col-span-2">{anime.episodes}</dd>
-        </div>
-        <div>
-          <dt className="font-medium">Duration</dt>
-          <dd className="text-gray-500 sm:col-span-2">{anime.duration}</dd>
-        </div>
-        <div>
-          <dt className="font-medium">Status</dt>
-          <dd className="text-gray-500 sm:col-span-2">{anime.status}</dd>
-        </div>
-        <div>
-          <dt className="font-medium">Themes</dt>
-          <dd className="text-gray-500 sm:col-span-2">
-            {anime.themes.map(({ name }) => name).join(", ")}
-          </dd>
-        </div>
-        <div>
-          <dt className="font-medium">Built By</dt>
-          <dd className="text-gray-500 sm:col-span-2">
-            {anime.studios.map((s) => s.name).join(", ")}
-          </dd>
-        </div>
-        <div>
-          <dt className="font-medium">Also Known As</dt>
-          <dd className="text-gray-500 sm:col-span-2">
-            {anime.title_synonyms.join(", ")}
-          </dd>
-        </div>
-      </div>
-      <div className="grid grid-cols-1 gap-y-4  p-4 px-4 md:gap-y-8 lg:grid-cols-2">
-        <div>
-          <h3 className="py-6 text-2xl">What users are saying</h3>
-          <Rating rating={score} totalReviews={scored_by} scores={scores} />
-        </div>
-        <div>
-          <h3 className="py-6 text-2xl">Anime Fandom Overview</h3>
-
-          <div className="flex h-fit flex-wrap justify-evenly gap-x-4  gap-y-8 rounded-lg border border-gray-100 bg-white px-6 py-8 dark:border-gray-800 dark:bg-gray-700 ">
-            <div className="flex items-center gap-x-4">
-              <span className="rounded-full bg-teal-100 p-3 text-teal-600">
-                <Eye />
-              </span>
-              <p className="text-2xl font-medium text-gray-900 dark:text-white">
-                {watching}
-              </p>
-              {/* <span className="text-sm text-gray-500">Watching</span> */}
-            </div>
-            <div className="flex items-center gap-x-4">
-              <span className="rounded-full bg-green-100 p-3 text-green-600">
-                <Check />
-              </span>
-              <p className="text-2xl font-medium text-gray-900 dark:text-white">
-                {completed}
-              </p>
-              {/* <span className="text-sm text-gray-500">Watching</span> */}
-            </div>
-            <div className="flex flex-wrap items-center gap-x-4">
-              <span className="rounded-full bg-red-100 p-3 text-red-600">
-                <Trash2 />
-              </span>
-              <p className="text-2xl font-medium text-gray-900 dark:text-white">
-                {dropped}
-              </p>
-              {/* <span className="text-sm text-gray-500">Watching</span> */}
-            </div>
-            <div className="flex items-center gap-x-4">
-              <span className="rounded-full bg-yellow-100 p-3 text-yellow-600">
-                <CalendarClock />
-              </span>
-              <p className="text-2xl font-medium text-gray-900 dark:text-white">
-                {plan_to_watch}
-              </p>
-              {/* <span className="text-sm text-gray-500">Watching</span> */}
-            </div>
-            <div className="flex items-center gap-x-4">
-              <span className="rounded-full bg-blue-100 p-3 text-blue-600">
-                <PauseCircle />
-              </span>
-              <p className="text-2xl font-medium text-gray-900 dark:text-white">
-                {on_hold}
-              </p>
-              {/* <span className="text-sm text-gray-500">Watching</span> */}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="aspect-video w-full max-w-[812px] px-4">
-        <h4 className="text-xl font-medium md:text-2xl">Trailer</h4>
-        <Suspense
-          fallback={
-            <div className="flex flex-col space-y-3">
-              <Skeleton className="h-[125px] w-[250px] rounded-xl" />
-            </div>
-          }
-        >
-          <Video src={trailer.embed_url} />
-        </Suspense>
-      </div>
+      <Separator className="my-4" />
+      <AnimeDetailsTab anime={anime} statistics={statistics} />
     </>
   );
 };
