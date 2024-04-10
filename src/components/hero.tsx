@@ -16,11 +16,11 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { AnimeDetails } from "@/types/AnimeResponse";
+import { AnimeInformation } from "@/types/AnimeResponse";
 
 type Props = {};
 
-const Hero = ({ animeList }: { animeList: AnimeDetails[] }) => {
+const Hero = ({ animeList }: { animeList: AnimeInformation[] }) => {
   const heroSlide = animeList.map(
     ({
       rank,

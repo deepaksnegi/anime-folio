@@ -1,11 +1,11 @@
-import { AnimeDetails } from "@/types/AnimeResponse";
+import { AnimeInformation } from "@/types/AnimeResponse";
 import { Star } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import Link from "next/link";
 
 type Props = {
-  anime: AnimeDetails;
+  anime: AnimeInformation;
 };
 
 const TrendingCard = (props: Props) => {
