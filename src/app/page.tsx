@@ -20,7 +20,11 @@ const Home = () => {
   const topFiveAnime = popularAnime.slice(0, 5);
 
   if (status === "pending") {
-    return <Loader showDialog />;
+    return (
+      <div className="flex h-screen w-screen items-center justify-center">
+        <Loader showDialog />
+      </div>
+    );
   }
 
   if (status === "error") {
