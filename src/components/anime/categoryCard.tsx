@@ -63,19 +63,23 @@ const CategoryCard = (props: Props) => {
     );
   });
 
-  return status === "pending" ? (
-    <Loader />
-  ) : (
+  return (
     <div className="flex flex-col p-5">
       <h4 className="font-bold">{heading}</h4>
-      <div className="max-w-80">{list}</div>
-      <Link
-        href={`/collection/?filter=${filterName}&heading=${heading}`}
-        className="flex items-center gap-x-1 p-2 font-semibold"
-      >
-        View More
-        <ChevronRight size={16} />
-      </Link>
+      {status === "pending" ? (
+        <Loader className="mt-6" />
+      ) : (
+        <>
+          <div className="max-w-80">{list}</div>
+          <Link
+            href={`/collection/?filter=${filterName}&heading=${heading}`}
+            className="flex items-center gap-x-1 p-2 font-semibold"
+          >
+            View More
+            <ChevronRight size={16} />
+          </Link>
+        </>
+      )}
     </div>
   );
 };
