@@ -86,7 +86,10 @@ const Sidebar = (props: Props) => {
                     /> */}
 
                   <Avatar>
-                    <AvatarImage src="https://cdn.waifu.im/7681.jpg" />
+                    <AvatarImage
+                      src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                      alt="avatar image"
+                    />
                     <AvatarFallback>Login</AvatarFallback>
                   </Avatar>
                 </button>
