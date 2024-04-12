@@ -2,6 +2,7 @@ import { Statistics } from "@/types/StatisticsResponse";
 import jikanClient from "../clients/jikanClient";
 import { APIType, AnimeInformation } from "@/types/AnimeResponse";
 import { AnimeCharacter } from "@/types/AnimeCharacters";
+import PQueue from "p-queue";
 
 export interface QueryParams {
   pageParam: number;
@@ -11,7 +12,18 @@ export interface QueryParams {
   sfw?: boolean;
 }
 
+const jikanQueue = new PQueue({
+  concurrency: 1,
+  intervalCap: 1,
+  interval: 900,
+});
+
 const getAnimeList = async (queryParams: QueryParams) => {
+  return jikanQueue.add(
+    async () => await getAnimeByFilter(queryParams),
+  ) as Promise<APIType>;
+};
+const getAnimeByFilter = async (queryParams: QueryParams) => {
   const { pageParam = 1, limit = 10, filter, type, sfw = true } = queryParams;
 
   const queryParameters: Record<string, string> = {
