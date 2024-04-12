@@ -20,6 +20,8 @@ export const metadata: Metadata = {
   description: "Track what you like",
 };
 
+const staleTime = 10 * 60 * 1000;
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -27,13 +29,22 @@ export default async function RootLayout({
 }>) {
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
-    queryKey: ["topFivePopularAnime"],
-    queryFn: () => getAnimeList({ pageParam: 1, limit: 5 }),
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: ["popularAnime", "airing", 10, undefined],
+    queryFn: ({ pageParam }) =>
+      getAnimeList({ pageParam, filter: "airing", limit: 10 }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage: APIType) => {
+      const nextPage = lastPage.pagination.has_next_page
+        ? lastPage.pagination.current_page + 1
+        : undefined;
+      return nextPage;
+    },
+    staleTime,
   });
 
   await queryClient.prefetchInfiniteQuery({
-    queryKey: ["popularAnime", "airing"],
+    queryKey: ["popularAnime", "airing", 5, undefined],
     queryFn: ({ pageParam }) =>
       getAnimeList({ pageParam, filter: "airing", limit: 5 }),
     initialPageParam: 1,
@@ -43,46 +54,93 @@ export default async function RootLayout({
         : undefined;
       return nextPage;
     },
+    staleTime,
   });
 
-  await queryClient.prefetchInfiniteQuery({
-    queryKey: ["popularAnime", "bypopularity"],
-    queryFn: ({ pageParam }) =>
-      getAnimeList({ pageParam, filter: "bypopularity", limit: 5 }),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage: APIType) => {
-      const nextPage = lastPage.pagination.has_next_page
-        ? lastPage.pagination.current_page + 1
-        : undefined;
-      return nextPage;
-    },
-  });
+  //TODO: Remove or optimize the cache key
+  // await queryClient.prefetchInfiniteQuery({
+  //   queryKey: ["popularAnime", "bypopularity", 5, undefined],
+  //   queryFn: ({ pageParam }) =>
+  //     getAnimeList({ pageParam, filter: "bypopularity", limit: 5 }),
+  //   initialPageParam: 1,
+  //   getNextPageParam: (lastPage: APIType) => {
+  //     const nextPage = lastPage.pagination.has_next_page
+  //       ? lastPage.pagination.current_page + 1
+  //       : undefined;
+  //     return nextPage;
+  //   },
+  //   staleTime,
+  // });
 
-  await queryClient.prefetchInfiniteQuery({
-    queryKey: ["popularAnime", "favorite"],
-    queryFn: ({ pageParam }) =>
-      getAnimeList({ pageParam, filter: "favorite", limit: 5 }),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage: APIType) => {
-      const nextPage = lastPage.pagination.has_next_page
-        ? lastPage.pagination.current_page + 1
-        : undefined;
-      return nextPage;
-    },
-  });
+  // await queryClient.prefetchInfiniteQuery({
+  //   queryKey: ["popularAnime", "favorite", 5, undefined],
+  //   queryFn: ({ pageParam }) =>
+  //     getAnimeList({ pageParam, filter: "favorite", limit: 5 }),
+  //   initialPageParam: 1,
+  //   getNextPageParam: (lastPage: APIType) => {
+  //     const nextPage = lastPage.pagination.has_next_page
+  //       ? lastPage.pagination.current_page + 1
+  //       : undefined;
+  //     return nextPage;
+  //   },
+  //   staleTime,
+  // });
 
-  await queryClient.prefetchInfiniteQuery({
-    queryKey: ["popularAnime", "upcoming"],
-    queryFn: ({ pageParam }) =>
-      getAnimeList({ pageParam, filter: "upcoming", limit: 5 }),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage: APIType) => {
-      const nextPage = lastPage.pagination.has_next_page
-        ? lastPage.pagination.current_page + 1
-        : undefined;
-      return nextPage;
-    },
-  });
+  // await queryClient.prefetchInfiniteQuery({
+  //   queryKey: ["popularAnime", "upcoming", 5, undefined],
+  //   queryFn: ({ pageParam }) =>
+  //     getAnimeList({ pageParam, filter: "upcoming", limit: 10 }),
+  //   initialPageParam: 1,
+  //   getNextPageParam: (lastPage: APIType) => {
+  //     const nextPage = lastPage.pagination.has_next_page
+  //       ? lastPage.pagination.current_page + 1
+  //       : undefined;
+  //     return nextPage;
+  //   },
+  //   staleTime,
+  // });
+
+  // await queryClient.prefetchInfiniteQuery({
+  //   queryKey: ["popularAnime", "movie", 12, undefined],
+  //   queryFn: ({ pageParam }) =>
+  //     getAnimeList({ pageParam, filter: "movie", limit: 12 }),
+  //   initialPageParam: 1,
+  //   getNextPageParam: (lastPage: APIType) => {
+  //     const nextPage = lastPage.pagination.has_next_page
+  //       ? lastPage.pagination.current_page + 1
+  //       : undefined;
+  //     return nextPage;
+  //   },
+  //   staleTime,
+  // });
+
+  // await queryClient.prefetchInfiniteQuery({
+  //   queryKey: ["popularAnime", "ova", 12, undefined],
+  //   queryFn: ({ pageParam }) =>
+  //     getAnimeList({ pageParam, filter: "ova", limit: 12 }),
+  //   initialPageParam: 1,
+  //   getNextPageParam: (lastPage: APIType) => {
+  //     const nextPage = lastPage.pagination.has_next_page
+  //       ? lastPage.pagination.current_page + 1
+  //       : undefined;
+  //     return nextPage;
+  //   },
+  //   staleTime,
+  // });
+
+  // await queryClient.prefetchInfiniteQuery({
+  //   queryKey: ["popularAnime", "special", 12, undefined],
+  //   queryFn: ({ pageParam }) =>
+  //     getAnimeList({ pageParam, filter: "special", limit: 12 }),
+  //   initialPageParam: 1,
+  //   getNextPageParam: (lastPage: APIType) => {
+  //     const nextPage = lastPage.pagination.has_next_page
+  //       ? lastPage.pagination.current_page + 1
+  //       : undefined;
+  //     return nextPage;
+  //   },
+  //   staleTime,
+  // });
 
   return (
     <html lang="en">
