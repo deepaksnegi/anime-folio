@@ -30,23 +30,9 @@ export default async function RootLayout({
   const queryClient = new QueryClient();
 
   await queryClient.prefetchInfiniteQuery({
-    queryKey: ["popularAnime", "airing", 10, undefined],
+    queryKey: ["popularAnime", "airing", 10, null],
     queryFn: ({ pageParam }) =>
       getAnimeList({ pageParam, filter: "airing", limit: 10 }),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage: APIType) => {
-      const nextPage = lastPage.pagination.has_next_page
-        ? lastPage.pagination.current_page + 1
-        : undefined;
-      return nextPage;
-    },
-    staleTime,
-  });
-
-  await queryClient.prefetchInfiniteQuery({
-    queryKey: ["popularAnime", "airing", 5, undefined],
-    queryFn: ({ pageParam }) =>
-      getAnimeList({ pageParam, filter: "airing", limit: 5 }),
     initialPageParam: 1,
     getNextPageParam: (lastPage: APIType) => {
       const nextPage = lastPage.pagination.has_next_page

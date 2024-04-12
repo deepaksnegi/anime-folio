@@ -12,9 +12,9 @@ type Props = {
 
 const CategoryCard = (props: Props) => {
   const { heading, filterName } = props;
-  const { popularAnime, error, status } = useGetPopularAnime(5, filterName);
+  const { popularAnime, error, status } = useGetPopularAnime(10, filterName);
 
-  const list = popularAnime.map((anime) => {
+  const list = popularAnime.slice(0, 5).map((anime) => {
     const title = anime.title_english ?? anime.title;
     return (
       <div
