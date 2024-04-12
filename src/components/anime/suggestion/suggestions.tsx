@@ -22,17 +22,17 @@ const Suggestions = (props: Props) => {
       status,
     } = useGetPopularAnime(12, undefined, filter);
 
-    if (status === "pending") {
-      return <PopularAnimeSkeleton />;
-    }
-
     return (
       <div className="mb-6">
         <h3 className="text-2xl">{heading}</h3>
         <div className="flex flex-wrap justify-evenly gap-6 px-4 py-4">
-          {popularAnime.map((anime) => (
-            <TrendingCard anime={anime} key={anime.mal_id} />
-          ))}
+          {status === "pending" ? (
+            <PopularAnimeSkeleton />
+          ) : (
+            popularAnime.map((anime) => (
+              <TrendingCard anime={anime} key={anime.mal_id} />
+            ))
+          )}
         </div>
       </div>
     );
