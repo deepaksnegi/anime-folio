@@ -5,6 +5,7 @@ import Loader from "@/components/loaders/loader";
 import {
   useGetAnimeById,
   useGetAnimeCharacters,
+  useGetAnimePictures,
   useGetAnimeStatistics,
 } from "@/lib/hooks/animeHook";
 
@@ -13,20 +14,27 @@ const Page = ({ params }: { params: { id: string } }) => {
 
   const anime = useGetAnimeById(id);
   const statistics = useGetAnimeStatistics(id);
-  const animeCharacters = useGetAnimeCharacters(id, !anime.isLoading);
+  const animeCharacters = useGetAnimeCharacters(id);
+  const animePicture = useGetAnimePictures(id);
 
-  if (anime.isLoading && statistics.isLoading) {
+  if (anime.isLoading && statistics.isLoading && animePicture.isLoading) {
     return <Loader />;
   }
 
-  if (anime.error && statistics.error) {
+  if (anime.error && statistics.error && animePicture.error) {
     return "Error" + anime.error?.message;
   }
 
   return (
     anime.data &&
-    statistics.data && (
-      <AnimeDetails anime={anime.data} statistics={statistics.data} />
+    statistics.data &&
+    animeCharacters.data && (
+      <AnimeDetails
+        anime={anime.data}
+        statistics={statistics.data}
+        pictures={animePicture.data ?? []}
+        characters={animeCharacters.data}
+      />
     )
   );
 };

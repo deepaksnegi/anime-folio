@@ -1,15 +1,19 @@
+import { AnimePicture } from "@/types/AnimePictures";
 import { AnimeInformation } from "@/types/AnimeResponse";
 import React from "react";
+import Image from "next/image";
 
 type Props = {
   anime: AnimeInformation;
+  pictures: AnimePicture[];
 };
 
 const AnimeBasicInformation = (props: Props) => {
-  const { anime } = props;
+  const { anime, pictures } = props;
+  const animePictures = pictures.map((picture) => picture.webp.large_image_url);
   return (
     <div>
-      <h3 className="px-4 py-6 text-2xl">More Details</h3>
+      <h3 className="py-6 text-2xl">More Details</h3>
 
       <div className="grid grid-cols-1 gap-y-4 px-4 md:grid-cols-3 md:gap-y-8 lg:grid-cols-4">
         <div>
@@ -63,6 +67,21 @@ const AnimeBasicInformation = (props: Props) => {
             {anime.title_synonyms.join(", ")}
           </dd>
         </div>
+      </div>
+
+      <h3 className="py-6 text-2xl">Pictures From Anime</h3>
+
+      <div className="flex flex-wrap gap-4 px-4 lg:gap-8">
+        {animePictures.map((picture) => (
+          <div key={picture} className="relative h-72 w-52 lg:h-96 lg:w-80">
+            <Image
+              className="rounded-lg object-cover"
+              src={picture}
+              alt=" anime picture"
+              fill
+            />
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -21,14 +21,18 @@ import { Statistics } from "@/types/StatisticsResponse";
 import Link from "next/link";
 import { Separator } from "../ui/separator";
 import AnimeDetailsTab from "./animeDetailsTab/animeDetailsTab";
+import { AnimePicture } from "@/types/AnimePictures";
+import { AnimeCharacter } from "@/types/AnimeCharacters";
 
 type Props = {
   anime: AnimeInformation;
   statistics: Statistics;
+  pictures: AnimePicture[];
+  characters: AnimeCharacter[];
 };
 
 const AnimeDetails = (props: Props) => {
-  const { anime, statistics } = props;
+  const { anime, statistics, pictures, characters } = props;
   const {
     rank,
     synopsis,
@@ -98,7 +102,12 @@ const AnimeDetails = (props: Props) => {
         <p>{synopsis}</p>
       </div>
       <Separator className="my-4" />
-      <AnimeDetailsTab anime={anime} statistics={statistics} />
+      <AnimeDetailsTab
+        anime={anime}
+        statistics={statistics}
+        pictures={pictures}
+        characters={characters}
+      />
     </>
   );
 };
