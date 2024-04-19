@@ -5,6 +5,7 @@ import {
   getAnimeById,
   getAnimeCharacters,
   getAnimeList,
+  getAnimePictures,
   getAnimeStatistics,
   getRandomAnime,
 } from "../services/animeService";
@@ -108,10 +109,27 @@ const useGetAnimeCharacters = (id: string, enabled?: boolean) => {
   };
 };
 
+const useGetAnimePictures = (id: string, enabled?: boolean) => {
+  const queryKey = ["getAnimePictures", id];
+
+  const { data, error, isLoading } = useQuery({
+    queryKey,
+    queryFn: () => getAnimePictures(id),
+    enabled,
+  });
+
+  return {
+    data,
+    error,
+    isLoading,
+  };
+};
+
 export {
   useGetPopularAnime,
   useGetRandomAnime,
   useGetAnimeById,
   useGetAnimeStatistics,
   useGetAnimeCharacters,
+  useGetAnimePictures,
 };

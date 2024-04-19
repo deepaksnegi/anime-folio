@@ -3,6 +3,7 @@ import jikanClient from "../clients/jikanClient";
 import { APIType, AnimeInformation } from "@/types/AnimeResponse";
 import { AnimeCharacter } from "@/types/AnimeCharacters";
 import PQueue from "p-queue";
+import { AnimePicture } from "@/types/AnimePictures";
 
 export interface QueryParams {
   pageParam: number;
@@ -79,10 +80,19 @@ const getAnimeCharacters = async (id: string) => {
   return response.data.data;
 };
 
+const getAnimePictures = async (id: string) => {
+  const response = await jikanClient.get<{ data: AnimePicture[] }>(
+    `/anime/${id}/pictures`,
+  );
+
+  return response.data.data;
+};
+
 export {
   getAnimeList,
   getRandomAnime,
   getAnimeById,
   getAnimeStatistics,
   getAnimeCharacters,
+  getAnimePictures,
 };
