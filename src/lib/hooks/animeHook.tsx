@@ -4,6 +4,7 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {
   getAnimeById,
   getAnimeCharacters,
+  getAnimeEpisodes,
   getAnimeList,
   getAnimePictures,
   getAnimeStatistics,
@@ -125,6 +126,22 @@ const useGetAnimePictures = (id: string, enabled?: boolean) => {
   };
 };
 
+const useGetAnimeEpisodes = (id: string, enabled?: boolean) => {
+  const queryKey = ["getAnimeEpisodes", id];
+
+  const { data, error, isLoading } = useQuery({
+    queryKey,
+    queryFn: () => getAnimeEpisodes(id),
+    enabled,
+  });
+
+  return {
+    data,
+    error,
+    isLoading,
+  };
+};
+
 export {
   useGetPopularAnime,
   useGetRandomAnime,
@@ -132,4 +149,5 @@ export {
   useGetAnimeStatistics,
   useGetAnimeCharacters,
   useGetAnimePictures,
+  useGetAnimeEpisodes,
 };

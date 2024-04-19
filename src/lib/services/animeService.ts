@@ -4,6 +4,7 @@ import { APIType, AnimeInformation } from "@/types/AnimeResponse";
 import { AnimeCharacter } from "@/types/AnimeCharacters";
 import PQueue from "p-queue";
 import { AnimePicture } from "@/types/AnimePictures";
+import { AnimeEpisodes } from "@/types/AnimeEpisodes";
 
 export interface QueryParams {
   pageParam: number;
@@ -88,6 +89,14 @@ const getAnimePictures = async (id: string) => {
   return response.data.data;
 };
 
+const getAnimeEpisodes = async (id: string) => {
+  const response = await jikanClient.get<AnimeEpisodes>(
+    `/anime/${id}/episodes`,
+  );
+
+  return response.data.data;
+};
+
 export {
   getAnimeList,
   getRandomAnime,
@@ -95,4 +104,5 @@ export {
   getAnimeStatistics,
   getAnimeCharacters,
   getAnimePictures,
+  getAnimeEpisodes,
 };
