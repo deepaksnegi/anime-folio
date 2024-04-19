@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo } from "react";
-import { useGetAnimeById } from "@/lib/hooks/animeHook";
+import { useGetAnimeById, useGetAnimeEpisodes } from "@/lib/hooks/animeHook";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -24,25 +24,35 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@radix-ui/react-select";
+} from "@/components/ui/select";
 import Image from "next/image";
 
 type Props = { params: { id: string } };
 
 const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
-  }),
+  name: z
+    .string()
+    .min(2, {
+      message: "Name must be at least 2 characters.",
+    })
+    .optional(),
   status: z.string().min(2, {
     message: "Status must be at least 2 characters.",
   }),
   lastSeason: z.number(),
-  lastEpisode: z.number(),
+  lastEpisode: z.string(),
+  userRating: z.number(),
+  like: z.string().nullable().optional(),
 });
+
+const WATCHING_STATUS = ["Watching", "Hold", "Wishlist", "Drop"];
 
 const AddAnimePage = ({ params }: Props) => {
   const { id } = params;
   const { data, isLoading, error } = useGetAnimeById(id);
+  const animeEpisodes = useGetAnimeEpisodes(id);
+
+  const episodes = animeEpisodes.data?.map((episode) => episode.title);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -50,6 +60,7 @@ const AddAnimePage = ({ params }: Props) => {
       name: "",
       status: "",
     },
+    mode: "onChange",
   });
 
   const { control, handleSubmit } = form;
@@ -110,13 +121,21 @@ const AddAnimePage = ({ params }: Props) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Watching Status </FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="watching | hold | wishlist | drop"
-                    {...field}
-                  />
-                </FormControl>
+                <Select onValueChange={field.onChange}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select status" />
+                    </SelectTrigger>
+                  </FormControl>
 
+                  <SelectContent>
+                    {WATCHING_STATUS?.map((status) => (
+                      <SelectItem value={status} key={status}>
+                        {status}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
@@ -141,9 +160,70 @@ const AddAnimePage = ({ params }: Props) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Last Watched Episodes </FormLabel>
+                <Select onValueChange={field.onChange}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select episode" />
+                    </SelectTrigger>
+                  </FormControl>
+
+                  <SelectContent>
+                    {animeEpisodes.data?.map((episode) => (
+                      <SelectItem
+                        value={episode.mal_id.toString()}
+                        key={episode.mal_id}
+                      >
+                        {episode.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={control}
+            name="userRating"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Your Rating </FormLabel>
                 <FormControl>
                   <Input placeholder="" {...field} />
                 </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={control}
+            name="like"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>What you like most </FormLabel>
+                <Select onValueChange={field.onChange}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="What you like" />
+                    </SelectTrigger>
+                  </FormControl>
+
+                  <SelectContent>
+                    <SelectItem value="Story">Story</SelectItem>
+                    <SelectItem value="Characters">Characters</SelectItem>
+                    <SelectItem value="Story Narration Style">
+                      Story Narration Style
+                    </SelectItem>
+                    <SelectItem value="Character Development">
+                      Character Development
+                    </SelectItem>
+                    <SelectItem value="Animation Style">
+                      Animation Style
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
 
                 <FormMessage />
               </FormItem>
