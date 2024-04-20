@@ -2,6 +2,8 @@
 
 import React from "react";
 import {
+  useGetAnimeCharacters,
+  useGetAnimePictures,
   useGetAnimeStatistics,
   useGetRandomAnime,
 } from "@/lib/hooks/animeHook";
@@ -19,7 +21,17 @@ const RandomSuggestion = (props: Props) => {
     id != undefined,
   );
 
-  if (anime.isLoading && statistics.isLoading) {
+  const animeCharacters = useGetAnimeCharacters(
+    id?.toString() ?? "",
+    id != undefined,
+  );
+
+  const animePicture = useGetAnimePictures(
+    id?.toString() ?? "",
+    id != undefined,
+  );
+
+  if (anime.isLoading && statistics.isLoading && animePicture.isLoading) {
     return <Loader showDialog />;
   }
 
@@ -30,7 +42,12 @@ const RandomSuggestion = (props: Props) => {
   return (
     anime.data &&
     statistics.data && (
-      <AnimeDetails anime={anime.data} statistics={statistics.data} />
+      <AnimeDetails
+        anime={anime.data}
+        statistics={statistics.data}
+        pictures={animePicture.data ?? []}
+        characters={animeCharacters.data ?? []}
+      />
     )
   );
 };
