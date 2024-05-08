@@ -10,8 +10,8 @@ const NotFound = (props: Props) => {
   return (
     <div className="flex flex-col items-center gap-4 p-4 text-center md:p-8">
       <p>
-        What are you doing here? I did not spend enough time designing the not
-        found page.
+        What are you doing here? I did not spend enough time designing this
+        page.
       </p>
       <Link href="/" className={buttonVariants({ variant: "default" })}>
         Please go back home
