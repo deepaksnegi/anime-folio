@@ -12,6 +12,7 @@ export interface QueryParams {
   filter?: string;
   type?: string;
   sfw?: boolean;
+  q?: string;
 }
 
 const jikanQueue = new PQueue({
@@ -22,10 +23,10 @@ const jikanQueue = new PQueue({
 
 const getAnimeList = async (queryParams: QueryParams) => {
   return jikanQueue.add(
-    async () => await getAnimeByFilter(queryParams),
+    async () => await getTopAnimeByFilter(queryParams),
   ) as Promise<APIType>;
 };
-const getAnimeByFilter = async (queryParams: QueryParams) => {
+const getTopAnimeByFilter = async (queryParams: QueryParams) => {
   const { pageParam = 1, limit = 10, filter, type, sfw = true } = queryParams;
 
   const queryParameters: Record<string, string> = {
@@ -44,6 +45,30 @@ const getAnimeByFilter = async (queryParams: QueryParams) => {
 
   const response = await jikanClient.get<APIType>(
     `/top/anime?${new URLSearchParams(queryParameters)}`,
+  );
+
+  return response.data;
+};
+
+const getAnimeBySearch = async (queryParams: QueryParams) => {
+  const { pageParam = 1, limit = 10, type, sfw = true, q } = queryParams;
+
+  const queryParameters: Record<string, string> = {
+    page: pageParam.toString(),
+    limit: limit.toString(),
+    sfw: sfw.toString(),
+  };
+
+  if (type) {
+    queryParameters.type = type;
+  }
+
+  if (q) {
+    queryParameters.q = q;
+  }
+
+  const response = await jikanClient.get<APIType>(
+    `/anime?${new URLSearchParams(queryParameters)}`,
   );
 
   return response.data;
@@ -105,4 +130,5 @@ export {
   getAnimeCharacters,
   getAnimePictures,
   getAnimeEpisodes,
+  getAnimeBySearch,
 };

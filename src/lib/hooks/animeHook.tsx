@@ -3,6 +3,7 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {
   getAnimeById,
+  getAnimeBySearch,
   getAnimeCharacters,
   getAnimeEpisodes,
   getAnimeList,
@@ -11,7 +12,12 @@ import {
   getRandomAnime,
 } from "../services/animeService";
 
-const useGetPopularAnime = (limit?: number, filter?: string, type?: string) => {
+const useGetPopularAnime = (
+  limit?: number,
+  filter?: string,
+  type?: string,
+  searchText?: string,
+) => {
   const queryKey = ["popularAnime", filter, limit, type];
 
   const {
@@ -24,7 +30,7 @@ const useGetPopularAnime = (limit?: number, filter?: string, type?: string) => {
   } = useInfiniteQuery({
     queryKey,
     queryFn: ({ pageParam }) =>
-      getAnimeList({ pageParam, filter, limit, type }),
+      getAnimeList({ pageParam, filter, limit, type, q: searchText }),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
       const nextPage = lastPage.pagination.has_next_page
@@ -48,6 +54,46 @@ const useGetPopularAnime = (limit?: number, filter?: string, type?: string) => {
   };
 };
 
+const useGetAnimeBySearch = (
+  limit?: number,
+  type?: string,
+  searchText?: string,
+) => {
+  const queryKey = ["animeBySearch", limit, type, searchText];
+
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery({
+    queryKey,
+    queryFn: ({ pageParam }) =>
+      getAnimeBySearch({ pageParam, limit, type, q: searchText }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPages) => {
+      const nextPage = lastPage.pagination.has_next_page
+        ? lastPage.pagination.current_page + 1
+        : undefined;
+      return nextPage;
+    },
+  });
+
+  const pages = data?.pages ?? [];
+
+  const anime = pages.flatMap((page) => page.data);
+
+  return {
+    anime,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    status,
+  };
+};
 const useGetRandomAnime = () => {
   const queryKey = ["randomAnime"];
 
@@ -150,4 +196,5 @@ export {
   useGetAnimeCharacters,
   useGetAnimePictures,
   useGetAnimeEpisodes,
+  useGetAnimeBySearch,
 };
