@@ -38,7 +38,7 @@ const Hero = ({ animeList }: { animeList: AnimeInformation[] }) => {
         <div className="h-[55vh] min-h-72 w-full cursor-pointer">
           <div className="relative flex h-full">
             <div className="w-[30%]">
-              <div className="absolute bottom-12 left-6 z-10 w-[40%] space-y-4 md:left-12">
+              <div className="absolute bottom-12 left-6 z-10 w-[70%] space-y-4 md:left-12 md:w-[40%]">
                 <span className="text-lg font-semibold">#{rank} Spotlight</span>
                 <h1 className="text-xl font-medium lg:text-4xl">
                   {title_english}
@@ -66,14 +66,14 @@ const Hero = ({ animeList }: { animeList: AnimeInformation[] }) => {
                 <div className="flex gap-3">
                   <Link
                     href={trailer.embed_url || `/details/${mal_id}/`}
-                    className="flex h-11 items-center gap-x-2 rounded-3xl bg-secondary px-6 text-secondary-foreground hover:bg-secondary/80"
+                    className="flex h-11 items-center gap-x-2 rounded-3xl bg-secondary px-4 text-sm text-secondary-foreground hover:bg-secondary/80 md:px-6 md:text-lg"
                   >
                     Watch Now
                     <PlayCircleIcon size={18} />
                   </Link>
                   <Link
                     href={`/details/${mal_id}/`}
-                    className="flex h-11 items-center gap-x-1 rounded-3xl bg-primary px-6 text-primary-foreground hover:bg-primary/90"
+                    className="flex h-11 items-center gap-x-1 rounded-3xl bg-primary px-4 text-sm text-primary-foreground hover:bg-primary/90 md:px-6 md:text-lg"
                   >
                     Details <ChevronRight size={18} />
                   </Link>
