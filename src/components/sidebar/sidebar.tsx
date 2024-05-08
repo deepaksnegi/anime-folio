@@ -9,16 +9,21 @@ import {
   HashIcon,
   HourglassIcon,
   MenuIcon,
+  SearchIcon,
   ShuffleIcon,
 } from "lucide-react";
 import ThemeToggler from "../ui/ThemeToggler";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import Search from "../ui/search";
+import { useRouter } from "next/navigation";
 type Props = {};
 
 const Sidebar = (props: Props) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showLoginInfo, setShowLoginInfo] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const router = useRouter();
 
   const menuItems = [
     {
@@ -48,6 +53,11 @@ const Sidebar = (props: Props) => {
     },
   ];
 
+  const handleSearch = (searchText: string) => {
+    router.push(`/search?searchText=${searchText}`);
+    setShowSearch(false);
+  };
+
   return (
     <>
       <nav className="fixed top-0 z-50 w-full border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
@@ -62,13 +72,43 @@ const Sidebar = (props: Props) => {
                 <span className="sr-only">Open sidebar</span>
                 <MenuIcon />
               </Button>
-              <Link href="/" className="ms-2 flex md:me-24">
-                <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white sm:text-2xl">
+              <Link href="/" className="flex md:me-24">
+                <span className="self-center whitespace-nowrap text-lg font-semibold dark:text-white sm:text-2xl">
                   Anime Folio
                 </span>
               </Link>
             </div>
-            <div className="flex items-center">
+            <div className="hidden min-w-[40%] md:block">
+              <Search
+                placeholder="Search Anime name..."
+                onSearch={handleSearch}
+              />
+            </div>
+            <div>
+              <Button
+                variant="ghost"
+                onClick={() => setShowSearch((prev) => !prev)}
+                className="inline-flex items-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 md:hidden"
+              >
+                <SearchIcon />
+              </Button>
+
+              <div
+                className={cn(
+                  "fixed bottom-0 left-2 right-2 z-50 rounded-lg bg-white dark:bg-gray-700",
+                  {
+                    hidden: !showSearch,
+                  },
+                )}
+                id="search-anime"
+              >
+                <Search
+                  placeholder="Search Anime name..."
+                  onSearch={handleSearch}
+                />
+              </div>
+            </div>
+            <div className="hidden items-center md:flex">
               <div className="ms-3 flex items-center gap-4">
                 <ThemeToggler />
                 <button
@@ -78,7 +118,6 @@ const Sidebar = (props: Props) => {
                   data-dropdown-toggle="dropdown-user"
                   onClick={() => setShowLoginInfo((prev) => !prev)}
                 >
-                  <span className="sr-only">Open user menu</span>
                   {/* <img
                       className="h-8 w-8 rounded-full"
                       src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
