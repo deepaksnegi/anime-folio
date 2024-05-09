@@ -95,7 +95,7 @@ const Sidebar = (props: Props) => {
 
               <div
                 className={cn(
-                  "fixed bottom-0 left-2 right-2 z-50 rounded-lg bg-white dark:bg-gray-700",
+                  "fixed left-2 right-2 top-16 z-50 rounded-lg bg-white dark:bg-gray-700",
                   {
                     hidden: !showSearch,
                   },
