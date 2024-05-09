@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Loader from "@/components/loaders/loader";
+import TrendingCard from "@/components/anime/trendingCard";
 
 type Props = {};
 
@@ -62,19 +63,9 @@ const Search = (props: Props) => {
   return (
     <div className="p-6 md:px-32">
       <h3 className=" text-2xl">We found some matching Anime</h3>
-
-      <BentoGrid className="mt-8">
-        {animeList?.map((item, i) => (
-          <BentoGridItem
-            key={i}
-            title={item.title}
-            // description={item.description}
-            header={item.header}
-            tags={item.icon}
-            className={i === 3 || i === 6 ? "md:col-span-2" : ""}
-          />
-        ))}
-      </BentoGrid>
+      <div className="flex flex-wrap justify-evenly gap-6 px-4 py-4">
+        {anime?.map((item) => <TrendingCard anime={item} key={item.mal_id} />)}
+      </div>
       <div
         className={cn(
           "my-16 flex items-center before:h-px before:flex-1  before:bg-gray-300 before:content-[''] after:h-px after:flex-1 after:bg-gray-300  after:content-['']",
